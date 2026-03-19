@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ShaadiMe - Premium Wedding Planning</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&amp;family=Playfair+Display:ital,wght@0,700;1,700&amp;family=Teko:wght@400;500;600&amp;family=Poppins:wght@400;500;600&amp;family=Great+Vibes&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FFF8DC", /* Light Golden/Beige - Ivory */
+                        "accent-gold": "#d4af37",
+                        "brand-maroon": "#4b1248", /* Deep Plum base */
+                        "background-dark": "#1a0000",
+                        "logo-shaadi": "#fad6d6",
+                        "logo-me": "#ff5757",
+                    },
+                    fontFamily: {
+                        "display": ["'Playfair Display'", "serif"],
+                        "serif-elegant": ["'Cormorant Garamond'", "serif"],
+                        "accent-script": ["'Great Vibes'", "cursive"],
+                        "hindi-modern": ["'Teko'", "sans-serif"],
+                        "body": ["'Poppins'", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #FFF8DC 50%, #b8860b 100%)
+        }
+        .text-gold {
+            color: #d4af37
+        }
+        .text-gradient-gold {
+            background: linear-gradient(180deg, #FDF6F3 0%, #C9A84C 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block
+        }
+        body {
+            min-height: max(884px, 100dvh);
+            background-color: #4b1248;
+            background-image: url("data:image/png;base64,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");
+            background-repeat: repeat;
+            background-size: 150px;
+            background-blend-mode: multiply
+        }
+    </style>
+</head>
+<body class="bg-brand-maroon font-body text-primary min-h-screen antialiased">
+<!-- Top Navigation Bar -->
+<nav class="sticky top-0 z-50 flex items-center bg-brand-maroon/95 backdrop-blur-md border-b border-accent-gold/20 p-4 justify-between">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-3xl">menu</span>
+</div>
+<div class="flex flex-col items-center text-center">
+<h1 class="text-2xl font-display font-bold tracking-tight italic">
+<span style="color: #fad6d6;">Shaadi</span><span style="color: #ff5757;">Me</span>
+</h1>
+<span class="text-xs uppercase tracking-[0.3em] text-accent-gold font-hindi-modern">The Royal Wedding</span>
+</div>
+<div class="flex w-10 items-center justify-end">
+<button class="flex items-center justify-center rounded-full size-10 bg-primary/10 text-primary">
+<span class="material-symbols-outlined">person</span>
+</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative h-64 w-full overflow-hidden flex items-center justify-center px-4">
+<div class="absolute inset-0 bg-brand-maroon/40">
+<img alt="Luxury Indian wedding mandap with flowers" class="w-full h-full object-cover opacity-40 mix-blend-overlay" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW3ttxxzGno8GffYimBIPur4X5TkOCAQXajFjpi3bi_6myXHZv-4zOM2rFIZteRD8U-FQitQdOUtgfu2cif26_8YBlkNdMrSKe9LQVbCACJBO-E0dQhPRIL2svMELSRHCafcTZ6rvZVJ6bywdHkAwJoHvLLG7l80HhAHmtQ3eYyJFtikRFajq50dOMnBN4aP03_sEJ15oQ0GyTBMtXBR5DlWjzl-l117gYNBa8umGH8wPJXxaVcEkNhXuJuhG0ejdjvE_apS7lfvL1"/>
+</div>
+<div class="relative text-center">
+<h2 class="text-gradient-gold text-3xl font-display font-bold mb-2 drop-shadow-lg">Elegance in Every Detail</h2>
+<p class="text-primary/90 max-w-xs mx-auto text-base font-serif-elegant italic">Your dream wedding, curated by experts with a touch of royalty.</p>
+</div>
+</header>
+<!-- Why ShaadiMe Section -->
+<section class="max-w-screen-xl mx-auto px-4 py-8">
+<div class="flex items-center gap-2 mb-6">
+<div class="h-[2px] w-8 bg-accent-gold"></div>
+<h2 class="text-gradient-gold text-2xl font-hindi-modern uppercase tracking-wider">Why ShaadiMe</h2>
+</div>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- End-to-End Planning -->
+<div class="group flex flex-col gap-3 rounded-xl border border-accent-gold/20 bg-brand-maroon/40 backdrop-blur-sm p-5 shadow-sm hover:shadow-md transition-shadow">
+<div class="size-12 rounded-lg bg-accent-gold/10 flex items-center justify-center text-accent-gold group-hover:bg-accent-gold group-hover:text-brand-maroon transition-colors">
+<span class="material-symbols-outlined">calendar_month</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-primary text-lg font-display font-bold leading-tight">End-to-End Planning</h3>
+<p class="text-primary/60 text-xs leading-normal font-body">From engagement to vidaai, every step managed.</p>
+</div>
+</div>
+<!-- Trusted Vendors -->
+<div class="group flex flex-col gap-3 rounded-xl border border-accent-gold/20 bg-brand-maroon/40 backdrop-blur-sm p-5 shadow-sm hover:shadow-md transition-shadow">
+<div class="size-12 rounded-lg bg-accent-gold/10 flex items-center justify-center text-accent-gold group-hover:bg-accent-gold group-hover:text-brand-maroon transition-colors">
+<span class="material-symbols-outlined">verified_user</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-primary text-lg font-display font-bold leading-tight">Trusted Vendors</h3>
+<p class="text-primary/60 text-xs leading-normal font-body">Exclusively verified partners for premium service.</p>
+</div>
+</div>
+<!-- Personalized Experience -->
+<div class="group flex flex-col gap-3 rounded-xl border border-accent-gold/20 bg-brand-maroon/40 backdrop-blur-sm p-5 shadow-sm hover:shadow-md transition-shadow">
+<div class="size-12 rounded-lg bg-accent-gold/10 flex items-center justify-center text-accent-gold group-hover:bg-accent-gold group-hover:text-brand-maroon transition-colors">
+<span class="material-symbols-outlined">auto_fix_high</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-primary text-lg font-display font-bold leading-tight">Personalized Experience</h3>
+<p class="text-primary/60 text-xs leading-normal font-body">Bespoke itineraries tailored to your family's needs.</p>
+</div>
+</div>
+<!-- Made for Indian Weddings -->
+<div class="group flex flex-col gap-3 rounded-xl border border-accent-gold/20 bg-brand-maroon/40 backdrop-blur-sm p-5 shadow-sm hover:shadow-md transition-shadow">
+<div class="size-12 rounded-lg bg-accent-gold/10 flex items-center justify-center text-accent-gold group-hover:bg-accent-gold group-hover:text-brand-maroon transition-colors">
+<span class="material-symbols-outlined">temple_hindu</span>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-primary text-lg font-display font-bold leading-tight">Indian Heritage</h3>
+<p class="text-primary/60 text-xs leading-normal font-body">Deep understanding of traditional rituals &amp; modern flair.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Wedding Shopping Section -->
+<section class="max-w-screen-xl mx-auto px-4 py-12 mb-20">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-2">
+<div class="h-[2px] w-8 bg-accent-gold"></div>
+<h2 class="text-gradient-gold text-2xl font-hindi-modern uppercase tracking-wider">Wedding Shopping</h2>
+</div>
+<span class="px-3 py-1 rounded-full bg-accent-gold/20 text-accent-gold text-xs font-hindi-modern uppercase tracking-widest border border-accent-gold/30">
+                Launching Soon
+            </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Bridal Sarees Card -->
+<div class="relative overflow-hidden rounded-2xl group aspect-[4/5] md:aspect-video bg-brand-maroon/30">
+<img alt="Elegant Red Bridal Saree" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtZfx7wPSV0NZ7b7-Of7yMsy8f_yeDt-r-VMnIFC3NJfWsG7c2FNFlJbicxDa69OFiV7VEfCkD39DHRqyKeptXhYcgpwq6BL5Buh3J-WKw4mf2SqkYPCPZCf31vxqBE9zgmJLI-tgCEM0UgxSE-eObBTrQ6hfRYXKKZwF6VW2V6hO2ozURX9U86mwdeUjCco8rMR_E-UczFq-MEpL-suGmGcEve9ACvMtivTQ5FClT-jEwujqaJCp3wgxoz3sdl3xl2qT9Vc4XVwXo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-brand-maroon/90 via-brand-maroon/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full">
+<h3 class="text-gradient-gold text-3xl font-display font-bold mb-1 italic">Bridal Sarees</h3>
+<p class="text-accent-gold font-serif-elegant italic text-lg mb-4">Handwoven heritage silks</p>
+<button class="bg-primary/10 backdrop-blur-md border border-primary/20 text-primary px-6 py-2 rounded-full text-sm font-hindi-modern uppercase tracking-widest hover:bg-primary hover:text-brand-maroon transition-colors">
+                        Get Early Access
+                    </button>
+</div>
+</div>
+<!-- Exquisite Jewellery Card -->
+<div class="relative overflow-hidden rounded-2xl group aspect-[4/5] md:aspect-video bg-brand-maroon/30">
+<img alt="Gold Bridal Jewellery Set" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKkRaMJ3sKOvAfDSE3yu1JRxeL_6T8seSBZFKHwNt8ryMz8z5Nq8ZcXm7xT_qG06_6EkYyIKeNjgQrjN53_SN1m2XCONdv-5QOeLv9YCi5dXzfOH4GG-pjyDKLq6KBKxRqvbDmST-FNUcvjTTAqxXORgjCt32VOCF37B8smzmL3yYEP4WwczoSjiq6rRH1K3Y12x09vSE0g1_l_08w3HeQUfVVLK5w5tTdMMoXQbkxQRObndgtUmSpCdmVLEkNZjhtph2gr3bILm21"/>
+<div class="absolute inset-0 bg-gradient-to-t from-brand-maroon/90 via-brand-maroon/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full">
+<h3 class="text-gradient-gold text-3xl font-display font-bold mb-1 italic">Exquisite Jewellery</h3>
+<p class="text-accent-gold font-serif-elegant italic text-lg mb-4">Kundan &amp; Polki masterpieces</p>
+<button class="bg-primary/10 backdrop-blur-md border border-primary/20 text-primary px-6 py-2 rounded-full text-sm font-hindi-modern uppercase tracking-widest hover:bg-primary hover:text-brand-maroon transition-colors">
+                        Explore Collection
+                    </button>
+</div>
+</div>
+</div>
+<!-- Luxury Teaser Banner -->
+<div class="mt-8 rounded-2xl p-8 gold-gradient flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
+<div class="text-center md:text-left">
+<h4 class="text-brand-maroon text-2xl font-display font-bold mb-1">Curated Luxury for Your D-Day</h4>
+<p class="text-brand-maroon/80 text-base font-serif-elegant italic">Join the waitlist for exclusive designer launches.</p>
+</div>
+<div class="flex gap-2 w-full md:w-auto">
+<input class="flex-1 md:w-64 rounded-lg border-none bg-white/50 backdrop-blur-sm px-4 py-3 text-sm font-body focus:ring-2 focus:ring-brand-maroon placeholder:text-brand-maroon/50" placeholder="Your email address" type="email"/>
+<button class="bg-brand-maroon text-primary px-6 py-3 rounded-lg font-hindi-modern text-lg uppercase tracking-wider hover:opacity-90 transition-opacity shadow-lg">
+                    Join
+                </button>
+</div>
+</div>
+</section>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-50 bg-brand-maroon/95 backdrop-blur-xl border-t border-accent-gold/20 px-4 pb-6 pt-2">
+<div class="flex gap-2 max-w-screen-xl mx-auto">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined text-[24px] fill-[1]">home</span>
+<p class="text-xs font-hindi-modern uppercase tracking-wider">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/40" href="#">
+<span class="material-symbols-outlined text-[24px]">groups</span>
+<p class="text-xs font-hindi-modern uppercase tracking-wider">Vendors</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/40" href="#">
+<span class="material-symbols-outlined text-[24px]">shopping_bag</span>
+<p class="text-xs font-hindi-modern uppercase tracking-wider">Shop</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/40" href="#">
+<span class="material-symbols-outlined text-[24px]">favorite</span>
+<p class="text-xs font-hindi-modern uppercase tracking-wider">Saved</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/40" href="#">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<p class="text-xs font-hindi-modern uppercase tracking-wider">Profile</p>
+</a>
+</div>
+</div>
+</body></html>
