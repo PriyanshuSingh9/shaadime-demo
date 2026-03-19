@@ -180,64 +180,67 @@ export const decorStyles: DecorCard[] = [
   {
     name: "Floral Extravaganza",
     image:
-      "https://images.pexels.com/photos/34389342/pexels-photo-34389342.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/35760208/pexels-photo-35760208.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    imageStyle: { objectPosition: "center 62%" },
   },
   {
     name: "Drape & Lights",
     image:
       "https://images.pexels.com/photos/24023407/pexels-photo-24023407.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    imageStyle: { objectPosition: "center 40%" },
   },
   {
     name: "Marigold Traditional",
     image:
-      "https://images.pexels.com/photos/34303528/pexels-photo-34303528.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/34389342/pexels-photo-34389342.jpeg?auto=compress&cs=tinysrgb&w=1200",
     large: true,
+    imageStyle: { objectPosition: "center 55%" },
   },
   {
     name: "Minimal Luxe",
     image:
-      "https://images.pexels.com/photos/35760208/pexels-photo-35760208.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    imageStyle: { objectPosition: "center 58%" },
+      "https://images.pexels.com/photos/29781787/pexels-photo-29781787.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    imageStyle: { objectPosition: "center 50%" },
   },
   {
     name: "Royal Baroque",
     image:
       "https://images.pexels.com/photos/33361433/pexels-photo-33361433.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    imageStyle: { objectPosition: "center 46%" },
+    imageStyle: { objectPosition: "center 38%" },
   },
 ];
 
 export const whyCards: WhyCard[] = [
   {
-    icon: "🎯",
+    icon: "01",
     number: "01 — Complete Convenience",
     title: "You plan once. We handle the rest.",
     description:
       "Share the wedding you want once. We coordinate the moving pieces, follow through with vendors, and keep the day from turning into a checklist.",
   },
   {
-    icon: "💎",
+    icon: "02",
     number: "02 — Personalised to You",
     title: "Intimate ceremony or grand celebration.",
     description:
       "Whether you are planning for 80 guests or 800, the experience is shaped around your family, rituals, pace, and taste.",
   },
   {
-    icon: "📱",
+    icon: "03",
     number: "03 — One Point of Contact",
     title: "One planner. One number.",
     description:
       "You should not have to manage fifteen parallel conversations. One ShaadiMe planner keeps the context, the decisions, and the follow-through in one place.",
   },
   {
-    icon: "🪔",
+    icon: "04",
     number: "04 — Made for Indian Weddings",
     title: "We speak Indian wedding fluently.",
     description:
       "From family expectations to ceremony flow, we understand the scale and emotion of Indian weddings and plan with that reality in mind.",
   },
   {
-    icon: "🥂",
+    icon: "05",
     number: "05 — The ShaadiMe Promise",
     title: "You are the guest at your own wedding.",
     description:
@@ -259,21 +262,22 @@ export const cities: CityCard[] = [
     name: "Bengaluru",
     tagline: "We are here ✦",
     image:
-      "https://images.pexels.com/photos/30866399/pexels-photo-30866399.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    imageStyle: { objectPosition: "center 72%" },
+      "https://images.pexels.com/photos/3573382/pexels-photo-3573382.jpeg?auto=compress&cs=tinysrgb&w=800",
+    imageStyle: { objectPosition: "center 50%" },
   },
   {
     name: "Chennai",
     tagline: "We are here ✦",
     image:
-      "https://images.pexels.com/photos/29636129/pexels-photo-29636129.jpeg?auto=compress&cs=tinysrgb&w=1200",
-    imageStyle: { objectPosition: "center 52%" },
+      "https://images.pexels.com/photos/17926135/pexels-photo-17926135/free-photo-of-st-george-cathedral-at-sunset-in-chennai-india.jpeg?auto=compress&cs=tinysrgb&w=800",
+    imageStyle: { objectPosition: "center 50%" },
   },
   {
     name: "Hyderabad",
     tagline: "We are here ✦",
-    image: "/hyderabad.jpeg",
-    imageStyle: { objectPosition: "center 46%" },
+    image:
+      "https://images.pexels.com/photos/10070972/pexels-photo-10070972.jpeg?auto=compress&cs=tinysrgb&w=800",
+    imageStyle: { objectPosition: "center 50%" },
   },
 ];
 

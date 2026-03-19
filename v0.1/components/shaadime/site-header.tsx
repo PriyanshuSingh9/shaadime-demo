@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 
+import { BrandLogo } from "./brand-logo";
 import { navItems } from "./data";
 
 type SiteHeaderProps = {
@@ -23,10 +24,7 @@ export function SiteHeader({
     <>
       <nav className={`site-nav${scrolled ? " is-scrolled" : ""}`}>
         <a className="nav-logo-wrap" href="#hero" onClick={onCloseMobileNav}>
-          <div className="nav-logo">
-            <span className="s">Shaadi</span>
-            <span className="m">Me</span>
-          </div>
+          <BrandLogo className="nav-logo" priority />
         </a>
 
         <ul className="nav-links" aria-label="Primary">

@@ -56,36 +56,57 @@
         }
     </style>
 </head>
-<body class="bg-brand-maroon font-body text-primary min-h-screen antialiased">
+<body class="bg-brand-maroon font-body text-primary min-h-screen antialiased scroll-smooth">
 <!-- Top Navigation Bar -->
-<nav class="sticky top-0 z-50 flex items-center bg-brand-maroon/95 backdrop-blur-md border-b border-accent-gold/20 p-4 justify-between">
-<div class="text-primary flex size-10 shrink-0 items-center justify-center">
-<span class="material-symbols-outlined text-3xl">menu</span>
-</div>
-<div class="flex flex-col items-center text-center">
-<h1 class="text-2xl font-display font-bold tracking-tight italic">
+<nav class="sticky top-0 z-50 bg-brand-maroon/95 backdrop-blur-md border-b border-accent-gold/20">
+<div class="mx-auto flex max-w-screen-xl items-center justify-between px-4 py-3">
+<div class="flex items-center gap-2">
+<div class="flex items-center">
+<span class="text-2xl font-display font-bold tracking-tight italic">
 <span style="color: #fad6d6;">Shaadi</span><span style="color: #ff5757;">Me</span>
-</h1>
-<span class="text-xs uppercase tracking-[0.3em] text-accent-gold font-hindi-modern">The Royal Wedding</span>
+</span>
 </div>
-<div class="flex w-10 items-center justify-end">
-<button class="flex items-center justify-center rounded-full size-10 bg-primary/10 text-primary">
-<span class="material-symbols-outlined">person</span>
+<span class="hidden md:inline-block text-[0.65rem] uppercase tracking-[0.3em] text-accent-gold font-hindi-modern">Premium South Indian Weddings</span>
+</div>
+<div class="hidden md:flex items-center gap-6 text-xs font-hindi-modern uppercase tracking-[0.3em]">
+<a href="#home" class="nav-link text-accent-gold border-b-2 border-accent-gold pb-1">Home</a>
+<a href="#themes" class="nav-link text-primary/70 hover:text-primary">Themes</a>
+<a href="#venues" class="nav-link text-primary/70 hover:text-primary">Venues</a>
+<a href="#decor" class="nav-link text-primary/70 hover:text-primary">Decor</a>
+<a href="#why" class="nav-link text-primary/70 hover:text-primary">Why ShaadiMe</a>
+<a href="#cities" class="nav-link text-primary/70 hover:text-primary">Cities</a>
+<a href="#faq" class="nav-link text-primary/70 hover:text-primary">FAQ</a>
+</div>
+<div class="flex items-center gap-2">
+<button class="inline-flex items-center rounded-full bg-accent-gold px-4 py-2 text-xs font-hindi-modern uppercase tracking-[0.25em] text-brand-maroon shadow-md hover:bg-accent-gold/90">
+<span>Start my wedding planning</span>
+<span class="material-symbols-outlined text-sm ms-1">arrow_forward</span>
 </button>
+</div>
 </div>
 </nav>
 <!-- Hero Section -->
-<header class="relative h-64 w-full overflow-hidden flex items-center justify-center px-4">
+<header id="home" class="relative h-64 w-full overflow-hidden flex items-center justify-center px-4">
 <div class="absolute inset-0 bg-brand-maroon/40">
 <img alt="Luxury Indian wedding mandap with flowers" class="w-full h-full object-cover opacity-40 mix-blend-overlay" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW3ttxxzGno8GffYimBIPur4X5TkOCAQXajFjpi3bi_6myXHZv-4zOM2rFIZteRD8U-FQitQdOUtgfu2cif26_8YBlkNdMrSKe9LQVbCACJBO-E0dQhPRIL2svMELSRHCafcTZ6rvZVJ6bywdHkAwJoHvLLG7l80HhAHmtQ3eYyJFtikRFajq50dOMnBN4aP03_sEJ15oQ0GyTBMtXBR5DlWjzl-l117gYNBa8umGH8wPJXxaVcEkNhXuJuhG0ejdjvE_apS7lfvL1"/>
 </div>
-<div class="relative text-center">
-<h2 class="text-gradient-gold text-3xl font-display font-bold mb-2 drop-shadow-lg">Elegance in Every Detail</h2>
-<p class="text-primary/90 max-w-xs mx-auto text-base font-serif-elegant italic">Your dream wedding, curated by experts with a touch of royalty.</p>
+<div class="relative text-center space-y-4">
+<p class="text-xs uppercase tracking-[0.35em] text-accent-gold font-hindi-modern">For South Indian Weddings Worth Arriving For</p>
+<h2 class="text-gradient-gold text-3xl font-display font-bold leading-snug drop-shadow-lg">
+Craft a wedding worth<br/>
+arriving for
+</h2>
+<p class="text-primary/90 max-w-xs mx-auto text-sm font-serif-elegant italic">
+Stay present in every ritual while our planners orchestrate the details behind the scenes.
+</p>
+<button class="mt-1 inline-flex items-center justify-center rounded-full bg-accent-gold px-5 py-2 text-xs font-hindi-modern uppercase tracking-[0.25em] text-brand-maroon shadow-md hover:bg-accent-gold/90">
+Start my wedding planning
+<span class="material-symbols-outlined text-sm ms-1">arrow_forward</span>
+</button>
 </div>
 </header>
 <!-- Why ShaadiMe Section -->
-<section class="max-w-screen-xl mx-auto px-4 py-8">
+<section id="why" class="max-w-screen-xl mx-auto px-4 py-8">
 <div class="flex items-center gap-2 mb-6">
 <div class="h-[2px] w-8 bg-accent-gold"></div>
 <h2 class="text-gradient-gold text-2xl font-hindi-modern uppercase tracking-wider">Why ShaadiMe</h2>
@@ -133,8 +154,107 @@
 </div>
 </div>
 </section>
+<!-- Themes, Venues & Decor -->
+<section id="themes" class="max-w-screen-xl mx-auto px-4 pt-12 pb-4">
+<div class="flex items-center gap-2 mb-6">
+<div class="h-[2px] w-8 bg-accent-gold"></div>
+<h2 class="text-gradient-gold text-2xl font-hindi-modern uppercase tracking-wider">Wedding Themes</h2>
+</div>
+<div class="grid gap-4 md:grid-cols-3">
+<article class="group rounded-2xl border border-accent-gold/25 bg-brand-maroon/40 overflow-hidden backdrop-blur-sm">
+<div class="relative h-40">
+<img src="https://images.pexels.com/photos/12361890/pexels-photo-12361890.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Traditional South Indian wedding mandap with Kanjivaram saree and jasmine decor" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+<div class="absolute inset-0 bg-gradient-to-t from-brand-maroon/80 via-brand-maroon/10 to-transparent"></div>
+</div>
+<div class="p-5 space-y-2">
+<h3 class="text-primary text-lg font-display font-bold">Traditional South Indian</h3>
+<p class="text-primary/70 text-xs font-body leading-relaxed">
+Kanjivaram silks, temple jewellery, brass urli arrangements, and a jasmine-framed mandap steeped in tradition.
+</p>
+</div>
+</article>
+<article class="group rounded-2xl border border-accent-gold/10 bg-brand-maroon/30 overflow-hidden backdrop-blur-sm">
+<div class="relative h-40">
+<img src="https://images.pexels.com/photos/17092275/pexels-photo-17092275.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Intimate modern wedding reception with warm lights" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+<div class="absolute inset-0 bg-gradient-to-t from-brand-maroon/80 via-brand-maroon/10 to-transparent"></div>
+</div>
+<div class="p-5 space-y-2">
+<h3 class="text-primary text-lg font-display font-bold">Modern Minimal</h3>
+<p class="text-primary/70 text-xs font-body leading-relaxed">
+Clean lines, soft florals, and a warm, cinematic palette that lets your story—not the decor—take center stage.
+</p>
+</div>
+</article>
+<article class="group rounded-2xl border border-accent-gold/10 bg-brand-maroon/30 overflow-hidden backdrop-blur-sm">
+<div class="relative h-40">
+<img src="https://images.pexels.com/photos/3064484/pexels-photo-3064484.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Fusion wedding sangeet with dance floor and lights" class="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"/>
+<div class="absolute inset-0 bg-gradient-to-t from-brand-maroon/80 via-brand-maroon/10 to-transparent"></div>
+</div>
+<div class="p-5 space-y-2">
+<h3 class="text-primary text-lg font-display font-bold">Heritage x Modern Fusion</h3>
+<p class="text-primary/70 text-xs font-body leading-relaxed">
+Blend temple rituals with contemporary sangeet energy, crafted for families that love both nostalgia and newness.
+</p>
+</div>
+</article>
+</div>
+</section>
+<section id="venues" class="max-w-screen-xl mx-auto px-4 pt-4 pb-8">
+<div class="flex items-center justify-between mb-2 gap-4">
+<div class="flex items-center gap-2">
+<div class="h-[2px] w-8 bg-accent-gold"></div>
+<h2 class="text-gradient-gold text-2xl font-hindi-modern uppercase tracking-wider">Venues</h2>
+</div>
+<p class="hidden md:block text-xs text-primary/60 font-body">
+Handpicked properties that understand South Indian rituals, logistics, and late-night celebrations.
+</p>
+</div>
+<p class="md:hidden text-xs text-primary/60 font-body mb-4">
+Handpicked venues that balance mandap space, guest comfort, and effortless logistics.
+</p>
+<div class="grid gap-4 md:grid-cols-3">
+<article class="rounded-xl border border-accent-gold/20 bg-brand-maroon/40 p-4 space-y-1">
+<h3 class="text-primary font-display text-base">Intimate City Banquets</h3>
+<p class="text-primary/70 text-xs">For 80–200 guests, ideal for engagement, nalangu, and close family functions.</p>
+</article>
+<article class="rounded-xl border border-accent-gold/20 bg-brand-maroon/40 p-4 space-y-1">
+<h3 class="text-primary font-display text-base">Resort &amp; Destination Stays</h3>
+<p class="text-primary/70 text-xs">Weekend-long celebrations with rooms, lawns, and poolside sangeets in one place.</p>
+</article>
+<article class="rounded-xl border border-accent-gold/20 bg-brand-maroon/40 p-4 space-y-1">
+<h3 class="text-primary font-display text-base">Traditional Kalyana Mandapams</h3>
+<p class="text-primary/70 text-xs">Classic halls with modern amenities and the right stage for muhurtham.</p>
+</article>
+</div>
+</section>
+<section id="decor" class="max-w-screen-xl mx-auto px-4 pt-4 pb-10">
+<div class="flex items-center gap-2 mb-4">
+<div class="h-[2px] w-8 bg-accent-gold"></div>
+<h2 class="text-gradient-gold text-2xl font-hindi-modern uppercase tracking-wider">Decor Stories</h2>
+</div>
+<div class="grid gap-4 md:grid-cols-3">
+<article class="rounded-2xl border border-accent-gold/15 bg-brand-maroon/40 p-5 space-y-2">
+<h3 class="text-primary font-display text-base">Temple-Inspired Mandap</h3>
+<p class="text-primary/70 text-xs font-body">
+Carved pillars, brass lamps, and layers of jasmine and marigold that feel like your favourite kovil brought to life.
+</p>
+</article>
+<article class="rounded-2xl border border-accent-gold/15 bg-brand-maroon/40 p-5 space-y-2">
+<h3 class="text-primary font-display text-base">Sunset Sangeet Stage</h3>
+<p class="text-primary/70 text-xs font-body">
+LED arches, fairy lights, and a performance-ready stage designed for dance, music, and candid photos.
+</p>
+</article>
+<article class="rounded-2xl border border-accent-gold/15 bg-brand-maroon/40 p-5 space-y-2">
+<h3 class="text-primary font-display text-base">Reception Walkway</h3>
+<p class="text-primary/70 text-xs font-body">
+Entry arches, photo corners, and floral installations that turn every arrival into a photo moment.
+</p>
+</article>
+</div>
+</section>
 <!-- Wedding Shopping Section -->
-<section class="max-w-screen-xl mx-auto px-4 py-12 mb-20">
+<section id="shop" class="max-w-screen-xl mx-auto px-4 py-12 mb-24">
 <div class="flex items-center justify-between mb-8">
 <div class="flex items-center gap-2">
 <div class="h-[2px] w-8 bg-accent-gold"></div>
@@ -185,28 +305,52 @@
 </div>
 </section>
 <!-- Bottom Navigation Bar -->
-<div class="fixed bottom-0 left-0 right-0 z-50 bg-brand-maroon/95 backdrop-blur-xl border-t border-accent-gold/20 px-4 pb-6 pt-2">
+<div class="fixed bottom-0 left-0 right-0 z-50 bg-brand-maroon/95 backdrop-blur-xl border-t border-accent-gold/20 px-4 pb-6 pt-2 md:hidden">
 <div class="flex gap-2 max-w-screen-xl mx-auto">
-<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#">
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary" href="#home">
 <span class="material-symbols-outlined text-[24px] fill-[1]">home</span>
 <p class="text-xs font-hindi-modern uppercase tracking-wider">Home</p>
 </a>
-<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/40" href="#">
-<span class="material-symbols-outlined text-[24px]">groups</span>
-<p class="text-xs font-hindi-modern uppercase tracking-wider">Vendors</p>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/60" href="#themes">
+<span class="material-symbols-outlined text-[24px]">palette</span>
+<p class="text-xs font-hindi-modern uppercase tracking-wider">Themes</p>
 </a>
-<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/40" href="#">
-<span class="material-symbols-outlined text-[24px]">shopping_bag</span>
-<p class="text-xs font-hindi-modern uppercase tracking-wider">Shop</p>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/60" href="#cities">
+<span class="material-symbols-outlined text-[24px]">location_city</span>
+<p class="text-xs font-hindi-modern uppercase tracking-wider">Cities</p>
 </a>
-<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/40" href="#">
-<span class="material-symbols-outlined text-[24px]">favorite</span>
-<p class="text-xs font-hindi-modern uppercase tracking-wider">Saved</p>
-</a>
-<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/40" href="#">
-<span class="material-symbols-outlined text-[24px]">person</span>
-<p class="text-xs font-hindi-modern uppercase tracking-wider">Profile</p>
+<a class="flex flex-1 flex-col items-center justify-center gap-1 text-primary/60" href="#faq">
+<span class="material-symbols-outlined text-[24px]">help</span>
+<p class="text-xs font-hindi-modern uppercase tracking-wider">FAQ</p>
 </a>
 </div>
 </div>
+<script>
+  const sections = document.querySelectorAll("section[id]");
+  const navLinks = document.querySelectorAll(".nav-link");
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navLinks.forEach((link) => {
+            const href = link.getAttribute("href");
+            if (!href) return;
+            if (href === `#${id}`) {
+              link.classList.add("text-accent-gold", "border-b-2", "border-accent-gold");
+              link.classList.remove("text-primary/70");
+            } else {
+              link.classList.remove("text-accent-gold", "border-b-2", "border-accent-gold");
+              if (!link.classList.contains("hover:text-primary")) {
+                link.classList.add("hover:text-primary");
+              }
+            }
+          });
+        }
+      });
+    },
+    { threshold: 0.4 }
+  );
+  sections.forEach((section) => observer.observe(section));
+</script>
 </body></html>
