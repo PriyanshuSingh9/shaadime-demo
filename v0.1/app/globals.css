@@ -429,14 +429,7 @@ img {
 .faq-footer p {
   color: var(--text-muted);
   font-family: var(--font-lora), sans-serif;
-}
-
-.hero-tagline {
-  max-width: 36rem;
-  margin: 0 auto 40px;
-  font-size: 1.08rem;
-  line-height: 1.82;
-  font-weight: 300;
+  text-align: center;
 }
 
 .hero-tagline-on-video {
@@ -740,13 +733,18 @@ img {
 }
 
 .section-sub {
-  max-width: 38rem;
+  max-width: min(38rem, 94vw);
+  width: 100%;
   font-size: 1.02rem;
   line-height: 1.8;
+  margin: 0 auto;
+  text-align: center;
 }
 
+.section-header .section-sub,
 .section-header.is-centered .section-sub {
   margin: 0 auto;
+  text-align: center;
 }
 
 .themes-grid {
