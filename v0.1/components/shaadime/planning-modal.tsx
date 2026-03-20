@@ -393,7 +393,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                   {step === 9 ? (
                     <>
                       <ChoiceGroup
-                        options={["🏙️ Bengaluru", "🌊 Chennai", "💎 Hyderabad"]}
+                        options={["💎 Hyderabad (Charminar)", "🏙️ Bengaluru (Vidhan Soudha)", "🌊 Chennai (Central)"]}
                         value={form.city}
                         onChange={(value) => updateField("city", value)}
                       />

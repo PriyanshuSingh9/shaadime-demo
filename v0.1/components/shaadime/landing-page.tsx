@@ -16,6 +16,7 @@ import { BrandLogo } from "./brand-logo";
 import { Reveal } from "./reveal";
 import { SectionHeader } from "./section-header";
 import { SiteHeader } from "./site-header";
+import { SiteFooter } from "./site-footer";
 import { Heart } from "lucide-react";
 
 export function LandingPage() {
@@ -180,7 +181,7 @@ export function LandingPage() {
               <SectionHeader
                 centered
                 label="✦ Now Live In"
-                subtitle="We are starting in three South Indian metros, with the same promise in each one: less coordination for you, more confidence on the day."
+                subtitle="We are starting in Hyderabad, Bengaluru, and Chennai, with more cities launching soon. We bring the same promise to each: less coordination for you, more confidence on the day."
                 title={
                   <>
                     Planning weddings in
@@ -403,23 +404,7 @@ export function LandingPage() {
         </section>
       </main>
 
-      <footer className="site-footer">
-        <div className="site-footer-inner">
-          <div className="footer-main">
-            <div className="footer-brand">
-              <BrandLogo className="footer-logo" />
-            </div>
-            <div className="footer-links">
-              <a href="#">Privacy</a>
-              <a href="#">Contact</a>
-              <button className="footer-cta" type="button" onClick={openPlanner}>
-                Begin Your Plan →
-              </button>
-            </div>
-          </div>
-          <p className="footer-cities footer-cities-footer">Bengaluru · Chennai · Hyderabad</p>
-        </div>
-      </footer>
+      <SiteFooter onOpenPlanner={openPlanner} />
 
       <PlanningModal open={plannerOpen} onClose={() => setPlannerOpen(false)} />
     </>

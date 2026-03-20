@@ -259,24 +259,24 @@ export const collageImages = [
 
 export const cities: CityCard[] = [
   {
+    name: "Hyderabad",
+    tagline: "We are here ✦",
+    image:
+      "https://images.pexels.com/photos/1139556/pexels-photo-1139556.jpeg?auto=compress&cs=tinysrgb&w=800",
+    imageStyle: { objectPosition: "center 50%" },
+  },
+  {
     name: "Bengaluru",
     tagline: "We are here ✦",
     image:
-      "https://images.pexels.com/photos/3573382/pexels-photo-3573382.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/1031698/pexels-photo-1031698.jpeg?auto=compress&cs=tinysrgb&w=800",
     imageStyle: { objectPosition: "center 50%" },
   },
   {
     name: "Chennai",
     tagline: "We are here ✦",
     image:
-      "https://images.pexels.com/photos/17926135/pexels-photo-17926135/free-photo-of-st-george-cathedral-at-sunset-in-chennai-india.jpeg?auto=compress&cs=tinysrgb&w=800",
-    imageStyle: { objectPosition: "center 50%" },
-  },
-  {
-    name: "Hyderabad",
-    tagline: "We are here ✦",
-    image:
-      "https://images.pexels.com/photos/10070972/pexels-photo-10070972.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/1174136/pexels-photo-1174136.jpeg?auto=compress&cs=tinysrgb&w=800",
     imageStyle: { objectPosition: "center 50%" },
   },
 ];
@@ -296,7 +296,7 @@ export const faqs: FaqItem[] = [
   {
     question: "Which cities is ShaadiMe available in right now?",
     answer:
-      "ShaadiMe is currently serving Bengaluru, Chennai, and Hyderabad. These are our launch cities, and we will expand from here.",
+      "ShaadiMe is currently serving Hyderabad, Bengaluru, and Chennai. These are our launch cities, and we will expand from here.",
   },
   {
     question: "How early should I get in touch before my wedding?",
