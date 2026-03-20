@@ -14,14 +14,15 @@ export function SectionHeader({
   compact = false,
 }: SectionHeaderProps) {
   return (
-    <div
+    <header
       className={`section-header${centered ? " is-centered" : ""}${
         compact ? " is-compact" : ""
       }`}
+      aria-label={label}
     >
       <span className="section-label">{label}</span>
       <h2 className="section-title">{title}</h2>
       {subtitle ? <p className="section-sub">{subtitle}</p> : null}
-    </div>
+    </header>
   );
 }

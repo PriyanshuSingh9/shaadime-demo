@@ -16,6 +16,7 @@ import { BrandLogo } from "./brand-logo";
 import { Reveal } from "./reveal";
 import { SectionHeader } from "./section-header";
 import { SiteHeader } from "./site-header";
+import { Heart } from "lucide-react";
 
 export function LandingPage() {
   const [plannerOpen, setPlannerOpen] = useState(false);
@@ -103,8 +104,9 @@ export function LandingPage() {
               <div className="hero-copy">
                 <p className="hero-eyebrow">✦ Wedding planning, handled with care</p>
                 <h1 className="hero-h1">
-                  <span className="hero-h1-line">Craft a wedding worth</span>
+                  <span className="hero-h1-line">Craft a wedding</span>
                   <span className="hero-h1-line">
+                    worth
                     <span className="accent">arriving for</span>
                   </span>
                 </h1>
@@ -297,8 +299,12 @@ export function LandingPage() {
                     />
                   </div>
                   <div className="tc-overlay" />
+                  {theme.featured ? (
+                    <span className="tc-pill" aria-label="Most loved" title="Most loved">
+                      <Heart size={16} />
+                    </span>
+                  ) : null}
                   <div className="tc-body">
-                    {theme.featured ? <span className="tc-pill">Most Loved</span> : null}
                     <p className="tc-name">{theme.name}</p>
                     <p className="tc-desc">{theme.description}</p>
                   </div>
