@@ -1785,12 +1785,21 @@ img {
   overflow-y: auto;
   flex: 1;
   scrollbar-width: thin;
-  scrollbar-color: rgba(229, 152, 155, 0.4) transparent;
+  scrollbar-color: var(--blush) transparent;
 }
-.pf-body::-webkit-scrollbar { width: 4px; }
+.pf-body::-webkit-scrollbar {
+  width: 8px;
+}
+.pf-body::-webkit-scrollbar-track {
+  background: rgba(75, 18, 72, 0.03);
+  border-radius: 4px;
+}
 .pf-body::-webkit-scrollbar-thumb {
-  background: rgba(229, 152, 155, 0.4);
-  border-radius: 2px;
+  background: var(--blush);
+  border-radius: 4px;
+}
+.pf-body::-webkit-scrollbar-thumb:hover {
+  background: var(--coral);
 }
 
 /* ── Step panel ── */
@@ -1934,30 +1943,33 @@ img {
   width: 100%;
   -webkit-appearance: none;
   appearance: none;
-  height: 20px;
-  background: transparent;
+  height: 24px;
+  background: linear-gradient(to right, var(--coral) 0%, var(--coral) var(--track-fill, 0%), var(--purple) var(--track-fill, 0%), var(--purple) 100%);
+  background-size: 100% 4px;
+  background-position: center;
+  background-repeat: no-repeat;
   border: none;
   outline: none;
   cursor: pointer;
   margin: 0;
   padding: 0;
+  border-radius: 12px;
 }
 .pf-range-wrap input[type="range"]::-webkit-slider-runnable-track {
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(75, 18, 72, 0.1);
+  height: 24px;
+  background: transparent;
   border: none;
 }
 .pf-range-wrap input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: var(--coral);
-  border: 3px solid var(--off-white);
+  border: 4px solid var(--off-white);
   box-shadow: 0 1px 4px rgba(75, 18, 72, 0.25), 0 0 0 1px rgba(255, 87, 87, 0.2);
   cursor: pointer;
-  margin-top: -7px;
+  margin-top: 3px;
   transition: transform 0.15s, box-shadow 0.2s;
 }
 .pf-range-wrap input[type="range"]::-webkit-slider-thumb:hover {
@@ -1965,15 +1977,14 @@ img {
   box-shadow: 0 2px 8px rgba(255, 87, 87, 0.35), 0 0 0 3px rgba(255, 87, 87, 0.08);
 }
 .pf-range-wrap input[type="range"]::-moz-range-track {
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(75, 18, 72, 0.1);
+  height: 24px;
+  background: transparent;
   border: none;
 }
 .pf-range-wrap input[type="range"]::-moz-range-progress {
-  height: 3px;
+  height: 4px;
   border-radius: 2px;
-  background: var(--blush);
+  background: var(--coral);
 }
 .pf-range-wrap input[type="range"]::-moz-range-thumb {
   width: 12px;
@@ -1981,7 +1992,7 @@ img {
   border-radius: 50%;
   background: var(--coral);
   border: 3px solid var(--off-white);
-  box-shadow: 0 1px 4px rgba(75, 18, 72, 0.2), 0 0 0 1px rgba(255, 87, 87, 0.15);
+  box-shadow: 0 1px 4px rgba(75, 18, 72, 0.25), 0 0 0 1px rgba(255, 87, 87, 0.2);
   cursor: pointer;
 }
 .pf-range-labels {

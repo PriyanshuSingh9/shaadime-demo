@@ -522,9 +522,11 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                                 max={200}
                                 step={1}
                                 value={form.budget}
-                                style={{
-                                  background: `linear-gradient(to right, var(--blush) ${((form.budget - 3) / (200 - 3)) * 100}%, rgba(75, 18, 72, 0.1) ${((form.budget - 3) / (200 - 3)) * 100}%)`,
-                                }}
+                                style={
+                                  {
+                                    "--track-fill": `${((form.budget - 3) / (200 - 3)) * 100}%`,
+                                  } as React.CSSProperties
+                                }
                                 onChange={(e) =>
                                   updateField("budget", parseInt(e.target.value))
                                 }
