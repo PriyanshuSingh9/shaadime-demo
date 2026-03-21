@@ -76,10 +76,8 @@ export function SiteFooter({ onOpenPlanner }: SiteFooterProps) {
             </div>
 
             <div className="social-links">
-              <a href="#" className="social-icon" aria-label="LinkedIn"><Linkedin size={20} /></a>
-              <a href="#" className="social-icon" aria-label="Instagram"><Instagram size={20} /></a>
-              <a href="#" className="social-icon" aria-label="Facebook"><Facebook size={20} /></a>
-              <a href="#" className="social-icon" aria-label="YouTube"><Youtube size={20} /></a>
+              <a href="https://www.linkedin.com/company/shaadime/" className="social-icon" aria-label="LinkedIn"><Linkedin size={20} /></a>
+              <a href="https://www.instagram.com/shaadime.official?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" className="social-icon" aria-label="Instagram"><Instagram size={20} /></a>
             </div>
           </div>
         </div>
