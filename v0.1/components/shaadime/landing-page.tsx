@@ -12,7 +12,6 @@ import {
   venues,
 } from "./data";
 import { PlanningModal } from "./planning-modal";
-import { BrandLogo } from "./brand-logo";
 import { Reveal } from "./reveal";
 import { SectionHeader } from "./section-header";
 import { SiteHeader } from "./site-header";

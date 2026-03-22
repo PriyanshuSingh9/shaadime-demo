@@ -99,7 +99,7 @@ export const themes: ThemeCard[] = [
     name: "Royal Grandeur",
     description: "Grand entrances, regal details, and a sense of occasion in every frame.",
     image:
-      "https://images.pexels.com/photos/33361433/pexels-photo-33361433.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/2306281/pexels-photo-2306281.jpeg?auto=compress&cs=tinysrgb&w=1200",
     featured: true,
     imageStyle: { objectPosition: "center 35%" },
   },
@@ -107,28 +107,28 @@ export const themes: ThemeCard[] = [
     name: "Intimate Garden",
     description: "Soft florals, easy light, and a celebration that feels close to home.",
     image:
-      "https://images.pexels.com/photos/26202234/pexels-photo-26202234.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/35985252/pexels-photo-35985252.jpeg?auto=compress&cs=tinysrgb&w=1200",
     imageStyle: { objectPosition: "center 52%" },
   },
   {
     name: "Traditional South Indian",
     description: "Sacred rituals, marigold warmth, and timeless South Indian elegance.",
     image:
-      "https://images.pexels.com/photos/34303528/pexels-photo-34303528.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/7669989/pexels-photo-7669989.jpeg?auto=compress&cs=tinysrgb&w=1200",
     imageStyle: { objectPosition: "center 56%" },
   },
   {
     name: "Destination",
     description: "A wedding that feels like a getaway, without the planning chaos.",
     image:
-      "https://images.pexels.com/photos/7663304/pexels-photo-7663304.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=1200",
     imageStyle: { objectPosition: "center 54%" },
   },
   {
     name: "Minimalist Modern",
     description: "Refined palettes, considered details, and understated luxury.",
     image:
-      "https://images.pexels.com/photos/10733520/pexels-photo-10733520.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=1200",
     imageStyle: { objectPosition: "center 50%" },
   },
 ];
@@ -139,7 +139,7 @@ export const venues: VenueCard[] = [
     description: "Historic character, dramatic architecture, and unmistakable grandeur.",
     tag: "Heritage Venue",
     image:
-      "https://images.pexels.com/photos/33361433/pexels-photo-33361433.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/2042109/pexels-photo-2042109.jpeg?auto=compress&cs=tinysrgb&w=1200",
     imageStyle: { objectPosition: "center 58%" },
   },
   {
@@ -155,7 +155,7 @@ export const venues: VenueCard[] = [
     description: "Fresh air, open lawns, and space for a relaxed celebration.",
     tag: "Open Air Venue",
     image:
-      "https://images.pexels.com/photos/29781787/pexels-photo-29781787.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/169198/pexels-photo-169198.jpeg?auto=compress&cs=tinysrgb&w=1200",
     imageStyle: { objectPosition: "center 56%" },
   },
   {
@@ -171,7 +171,7 @@ export const venues: VenueCard[] = [
     description: "Sea breeze, sunset light, and a wedding with a destination feel.",
     tag: "Destination Setting",
     image:
-      "https://images.pexels.com/photos/12031245/pexels-photo-12031245.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/169211/pexels-photo-169211.jpeg?auto=compress&cs=tinysrgb&w=1200",
     imageStyle: { objectPosition: "center 58%" },
   },
 ];
@@ -180,7 +180,7 @@ export const decorStyles: DecorCard[] = [
   {
     name: "Floral Extravaganza",
     image:
-      "https://images.pexels.com/photos/35760208/pexels-photo-35760208.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/3872610/pexels-photo-3872610.jpeg?auto=compress&cs=tinysrgb&w=1200",
     imageStyle: { objectPosition: "center 62%" },
   },
   {
@@ -192,20 +192,20 @@ export const decorStyles: DecorCard[] = [
   {
     name: "Marigold Traditional",
     image:
-      "https://images.pexels.com/photos/34389342/pexels-photo-34389342.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/6443947/pexels-photo-6443947.jpeg?auto=compress&cs=tinysrgb&w=1200",
     large: true,
     imageStyle: { objectPosition: "center 55%" },
   },
   {
     name: "Minimal Luxe",
     image:
-      "https://images.pexels.com/photos/29781787/pexels-photo-29781787.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/2959192/pexels-photo-2959192.jpeg?auto=compress&cs=tinysrgb&w=1200",
     imageStyle: { objectPosition: "center 50%" },
   },
   {
     name: "Royal Baroque",
     image:
-      "https://images.pexels.com/photos/33361433/pexels-photo-33361433.jpeg?auto=compress&cs=tinysrgb&w=1200",
+      "https://images.pexels.com/photos/948185/pexels-photo-948185.jpeg?auto=compress&cs=tinysrgb&w=1200",
     imageStyle: { objectPosition: "center 38%" },
   },
 ];
@@ -261,22 +261,21 @@ export const cities: CityCard[] = [
   {
     name: "Hyderabad",
     tagline: "We are here ✦",
-    image:
-      "https://images.pexels.com/photos/1139556/pexels-photo-1139556.jpeg?auto=compress&cs=tinysrgb&w=800",
+    image: "/hyderabad.jpeg",
     imageStyle: { objectPosition: "center 50%" },
   },
   {
     name: "Bengaluru",
     tagline: "We are here ✦",
     image:
-      "https://images.pexels.com/photos/1031698/pexels-photo-1031698.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/1007427/pexels-photo-1007427.jpeg?auto=compress&cs=tinysrgb&w=800",
     imageStyle: { objectPosition: "center 50%" },
   },
   {
     name: "Chennai",
     tagline: "We are here ✦",
     image:
-      "https://images.pexels.com/photos/1174136/pexels-photo-1174136.jpeg?auto=compress&cs=tinysrgb&w=800",
+      "https://images.pexels.com/photos/2362002/pexels-photo-2362002.jpeg?auto=compress&cs=tinysrgb&w=800",
     imageStyle: { objectPosition: "center 50%" },
   },
 ];

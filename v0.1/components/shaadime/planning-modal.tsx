@@ -75,32 +75,32 @@ const styleOptions = [
   {
     name: "Royal Grandeur",
     image:
-      "https://images.pexels.com/photos/33361433/pexels-photo-33361433.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://images.pexels.com/photos/2306281/pexels-photo-2306281.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
   {
     name: "Intimate Garden",
     image:
-      "https://images.pexels.com/photos/26202234/pexels-photo-26202234.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
   {
     name: "Traditional South Indian",
     image:
-      "https://images.pexels.com/photos/34303528/pexels-photo-34303528.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://images.pexels.com/photos/1444450/pexels-photo-1444450.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
   {
     name: "Minimalist Modern",
     image:
-      "https://images.pexels.com/photos/10733520/pexels-photo-10733520.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
   {
     name: "Floral Extravaganza",
     image:
-      "https://images.pexels.com/photos/35760208/pexels-photo-35760208.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://images.pexels.com/photos/2814831/pexels-photo-2814831.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
   {
     name: "Destination",
     image:
-      "https://images.pexels.com/photos/7663304/pexels-photo-7663304.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
 ];
 
