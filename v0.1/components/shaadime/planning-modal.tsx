@@ -2,6 +2,21 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { BrandLogo } from "./brand-logo";
+
+// ─────────────────────────────────────────────
+// Types
+// ─────────────────────────────────────────────
+
+type CeremonyEvent = {
+  type: string;
+  name: string;
+  /** Days relative to main wedding date. 0 = wedding day, -1 = day before, 1 = day after */
+  daysBefore: number;
+  included: boolean;
+  /** Whether the couple can toggle this off (wedding ceremony itself cannot be removed) */
+  required: boolean;
+};
 
 type PlanningModalProps = {
   open: boolean;
@@ -21,44 +36,146 @@ type FormState = {
   budget: number;
   styles: Set<string>;
   services: Set<string>;
+  events: CeremonyEvent[];
   notes: string;
   referral: string;
 };
 
+// ─────────────────────────────────────────────
+// Community → ceremony event templates
+// ─────────────────────────────────────────────
+
+const COMMUNITY_EVENTS: Record<string, CeremonyEvent[]> = {
+  Punjabi: [
+    { type: "roka", name: "Roka", daysBefore: -60, included: true, required: false },
+    { type: "engagement", name: "Engagement", daysBefore: -30, included: true, required: false },
+    { type: "mehendi", name: "Mehendi", daysBefore: -2, included: true, required: false },
+    { type: "haldi", name: "Haldi", daysBefore: -1, included: true, required: false },
+    { type: "sangeet", name: "Sangeet", daysBefore: -1, included: true, required: false },
+    { type: "wedding", name: "Wedding", daysBefore: 0, included: true, required: true },
+    { type: "reception", name: "Reception", daysBefore: 1, included: true, required: false },
+  ],
+  Telugu: [
+    { type: "engagement", name: "Nichayathartham", daysBefore: -30, included: true, required: false },
+    { type: "mehendi", name: "Mehendi", daysBefore: -2, included: true, required: false },
+    { type: "haldi", name: "Mangala Snanam", daysBefore: -1, included: true, required: false },
+    { type: "nalangu", name: "Nalangu", daysBefore: -1, included: true, required: false },
+    { type: "wedding", name: "Wedding", daysBefore: 0, included: true, required: true },
+    { type: "reception", name: "Reception", daysBefore: 1, included: true, required: false },
+  ],
+  Tamil: [
+    { type: "engagement", name: "Nichayathartham", daysBefore: -30, included: true, required: false },
+    { type: "naandi", name: "Naandi", daysBefore: -1, included: true, required: false },
+    { type: "wedding", name: "Wedding", daysBefore: 0, included: true, required: true },
+    { type: "reception", name: "Reception", daysBefore: 1, included: true, required: false },
+  ],
+  Kannada: [
+    { type: "engagement", name: "Engagement", daysBefore: -30, included: true, required: false },
+    { type: "mehendi", name: "Mehendi", daysBefore: -2, included: true, required: false },
+    { type: "haldi", name: "Haldi", daysBefore: -1, included: true, required: false },
+    { type: "sangeet", name: "Sangeet", daysBefore: -1, included: true, required: false },
+    { type: "wedding", name: "Wedding", daysBefore: 0, included: true, required: true },
+    { type: "reception", name: "Reception", daysBefore: 1, included: true, required: false },
+  ],
+  Malayali: [
+    { type: "engagement", name: "Engagement", daysBefore: -30, included: true, required: false },
+    { type: "mehendi", name: "Mehendi", daysBefore: -1, included: true, required: false },
+    { type: "wedding", name: "Wedding", daysBefore: 0, included: true, required: true },
+    { type: "reception", name: "Reception", daysBefore: 1, included: true, required: false },
+  ],
+  Marathi: [
+    { type: "engagement", name: "Sakhar Puda", daysBefore: -30, included: true, required: false },
+    { type: "mehendi", name: "Mehendi", daysBefore: -1, included: true, required: false },
+    { type: "haldi", name: "Haldi", daysBefore: -1, included: true, required: false },
+    { type: "sangeet", name: "Sangeet", daysBefore: -1, included: true, required: false },
+    { type: "wedding", name: "Wedding", daysBefore: 0, included: true, required: true },
+    { type: "reception", name: "Reception", daysBefore: 1, included: true, required: false },
+  ],
+  Gujarati: [
+    { type: "engagement", name: "Engagement", daysBefore: -30, included: true, required: false },
+    { type: "garba", name: "Garba Night", daysBefore: -1, included: true, required: false },
+    { type: "mehendi", name: "Mehendi", daysBefore: -1, included: true, required: false },
+    { type: "haldi", name: "Mandap Mahurat", daysBefore: -1, included: true, required: false },
+    { type: "wedding", name: "Wedding", daysBefore: 0, included: true, required: true },
+    { type: "reception", name: "Reception", daysBefore: 1, included: true, required: false },
+  ],
+  Bengali: [
+    { type: "engagement", name: "Engagement", daysBefore: -30, included: true, required: false },
+    { type: "aiburobhat", name: "Aiburobhat", daysBefore: -1, included: true, required: false },
+    { type: "haldi", name: "Gaye Holud", daysBefore: -1, included: true, required: false },
+    { type: "wedding", name: "Wedding", daysBefore: 0, included: true, required: true },
+    { type: "reception", name: "Bou Bhat", daysBefore: 1, included: true, required: false },
+  ],
+  Rajasthani: [
+    { type: "engagement", name: "Engagement", daysBefore: -30, included: true, required: false },
+    { type: "mehendi", name: "Mehendi", daysBefore: -2, included: true, required: false },
+    { type: "haldi", name: "Haldi", daysBefore: -1, included: true, required: false },
+    { type: "sangeet", name: "Sangeet", daysBefore: -1, included: true, required: false },
+    { type: "wedding", name: "Wedding", daysBefore: 0, included: true, required: true },
+    { type: "reception", name: "Reception", daysBefore: 1, included: true, required: false },
+  ],
+  Marwari: [
+    { type: "engagement", name: "Engagement", daysBefore: -30, included: true, required: false },
+    { type: "mehendi", name: "Mehendi", daysBefore: -2, included: true, required: false },
+    { type: "haldi", name: "Pithi", daysBefore: -1, included: true, required: false },
+    { type: "sangeet", name: "Sangeet", daysBefore: -1, included: true, required: false },
+    { type: "wedding", name: "Wedding", daysBefore: 0, included: true, required: true },
+    { type: "reception", name: "Reception", daysBefore: 1, included: true, required: false },
+  ],
+  Muslim: [
+    { type: "mehendi", name: "Mehndi", daysBefore: -2, included: true, required: false },
+    { type: "haldi", name: "Manjha", daysBefore: -1, included: true, required: false },
+    { type: "nikah", name: "Nikah", daysBefore: 0, included: true, required: true },
+    { type: "walima", name: "Walima", daysBefore: 1, included: true, required: false },
+  ],
+  Christian: [
+    { type: "engagement", name: "Engagement", daysBefore: -30, included: true, required: false },
+    { type: "bridal", name: "Bridal Shower", daysBefore: -7, included: true, required: false },
+    { type: "rehearsal", name: "Rehearsal Dinner", daysBefore: -1, included: true, required: false },
+    { type: "wedding", name: "Wedding Mass", daysBefore: 0, included: true, required: true },
+    { type: "reception", name: "Reception", daysBefore: 1, included: true, required: false },
+  ],
+  Other: [
+    { type: "wedding", name: "Wedding", daysBefore: 0, included: true, required: true },
+    { type: "reception", name: "Reception", daysBefore: 1, included: false, required: false },
+  ],
+};
+
+// ─────────────────────────────────────────────
+// Helper: human-readable timing label
+// ─────────────────────────────────────────────
+
+function timingLabel(daysBefore: number): string {
+  if (daysBefore === 0) return "Wedding day";
+  if (daysBefore === -1) return "Day before";
+  if (daysBefore === -2) return "2 days before";
+  if (daysBefore === 1) return "Day after";
+  if (daysBefore === 2) return "2 days after";
+  if (daysBefore <= -30 && daysBefore > -60) return "~1 month before";
+  if (daysBefore <= -60) return "~2 months before";
+  if (daysBefore < -7) return `${Math.abs(Math.round(daysBefore / 7))} weeks before`;
+  return `${Math.abs(daysBefore)} days before`;
+}
+
+// ─────────────────────────────────────────────
+// Static option arrays (unchanged from original)
+// ─────────────────────────────────────────────
+
 const TOTAL_STEPS = 5;
 
 const communities = [
-  "Telugu",
-  "Tamil",
-  "Kannada",
-  "Malayali",
-  "Marathi",
-  "Punjabi",
-  "Gujarati",
-  "Bengali",
-  "Rajasthani",
-  "Marwari",
-  "Muslim",
-  "Christian",
-  "Other",
+  "Telugu", "Tamil", "Kannada", "Malayali", "Marathi",
+  "Punjabi", "Gujarati", "Bengali", "Rajasthani", "Marwari",
+  "Muslim", "Christian", "Other",
 ];
 
 const planningCities = [
-  "Hyderabad",
-  "Bengaluru",
-  "Chennai",
-  "Mumbai",
-  "Delhi",
-  "Other",
+  "Chennai", "Bengaluru", "Hyderabad",
 ];
 
 const guestOptions = [
-  "Under 50 (intimate)",
-  "50 – 150",
-  "150 – 300",
-  "300 – 500",
-  "500 – 1000",
-  "1000+ (grand celebration)",
+  "Under 50 (intimate)", "50 – 150", "150 – 300",
+  "300 – 500", "500 – 1000", "1000+ (grand celebration)",
 ];
 
 const venueOptions = [
@@ -74,58 +191,39 @@ const venueOptions = [
 const styleOptions = [
   {
     name: "Royal Grandeur",
-    image:
-      "https://images.pexels.com/photos/2306281/pexels-photo-2306281.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image: "https://images.pexels.com/photos/2306281/pexels-photo-2306281.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
   {
     name: "Intimate Garden",
-    image:
-      "https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image: "https://images.pexels.com/photos/169190/pexels-photo-169190.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
   {
     name: "Traditional South Indian",
-    image:
-      "https://images.pexels.com/photos/1444450/pexels-photo-1444450.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image: "https://images.pexels.com/photos/1444450/pexels-photo-1444450.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
   {
     name: "Minimalist Modern",
-    image:
-      "https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image: "https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
   {
     name: "Floral Extravaganza",
-    image:
-      "https://images.pexels.com/photos/2814831/pexels-photo-2814831.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image: "https://images.pexels.com/photos/2814831/pexels-photo-2814831.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
   {
     name: "Destination",
-    image:
-      "https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600",
+    image: "https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600",
   },
 ];
 
 const serviceOptions = [
-  "Venue",
-  "Photography",
-  "Videography",
-  "Decoration & Florals",
-  "Catering",
-  "Bridal Makeup",
-  "Mehendi",
-  "Music & DJ",
-  "Wedding Invitations",
-  "Bridal Wear",
-  "Guest Management",
-  "Wedding Favours",
+  "Venue", "Photography", "Videography", "Decoration & Florals",
+  "Catering", "Bridal Makeup", "Mehendi", "Music & DJ",
+  "Wedding Invitations", "Bridal Wear", "Guest Management", "Wedding Favours",
 ];
 
 const referralOptions = [
-  "Instagram",
-  "Google search",
-  "Friend or family",
-  "Shaadi.com",
-  "Wedding expo",
-  "Other",
+  "Instagram", "Google search", "Friend or family",
+  "Shaadi.com", "Wedding expo", "Other",
 ];
 
 const stepLabels = [
@@ -135,6 +233,10 @@ const stepLabels = [
   { num: "04", label: "Priorities" },
   { num: "05", label: "Confirm" },
 ];
+
+// ─────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────
 
 function formatBudget(v: number): string {
   if (v < 100) return `₹${v} Lakhs`;
@@ -155,16 +257,39 @@ const initialState: FormState = {
   budget: 25,
   styles: new Set(),
   services: new Set(),
+  events: [],
   notes: "",
   referral: "",
 };
 
+// ─────────────────────────────────────────────
+// Component
+// ─────────────────────────────────────────────
+
 export function PlanningModal({ open, onClose }: PlanningModalProps) {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState<FormState>({ ...initialState, styles: new Set(), services: new Set() });
+  const [form, setForm] = useState<FormState>({
+    ...initialState,
+    styles: new Set(),
+    services: new Set(),
+    events: [],
+  });
   const bodyRef = useRef<HTMLDivElement>(null);
 
+  // ── Auto-populate ceremony events when community changes ──────────────────
+  useEffect(() => {
+    if (!form.community) return;
+
+    // Deep-copy the template so each couple gets independent event objects
+    const template = COMMUNITY_EVENTS[form.community] ?? COMMUNITY_EVENTS["Other"];
+    setForm((prev) => ({
+      ...prev,
+      events: template.map((e) => ({ ...e })),
+    }));
+  }, [form.community]);
+
+  // ── Keyboard / scroll / body-lock ─────────────────────────────────────────
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -179,12 +304,13 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
+  // ── Handlers ──────────────────────────────────────────────────────────────
   const handleClose = () => {
     onClose();
     setTimeout(() => {
       setStep(0);
       setSubmitted(false);
-      setForm({ ...initialState, styles: new Set(), services: new Set() });
+      setForm({ ...initialState, styles: new Set(), services: new Set(), events: [] });
     }, 300);
   };
 
@@ -194,20 +320,12 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
   };
 
   const nextStep = () => {
-    if (step < TOTAL_STEPS - 1) {
-      goToStep(step + 1);
-    } else {
-      setSubmitted(true);
-    }
+    if (step < TOTAL_STEPS - 1) goToStep(step + 1);
+    else setSubmitted(true);
   };
 
-  const prevStep = () => {
-    if (step > 0) goToStep(step - 1);
-  };
-
-  const jumpTo = (n: number) => {
-    if (n <= step) goToStep(n);
-  };
+  const prevStep = () => { if (step > 0) goToStep(step - 1); };
+  const jumpTo = (n: number) => { if (n <= step) goToStep(n); };
 
   const updateField = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -216,8 +334,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
   const toggleStyle = (name: string) => {
     setForm((prev) => {
       const next = new Set(prev.styles);
-      if (next.has(name)) next.delete(name);
-      else next.add(name);
+      next.has(name) ? next.delete(name) : next.add(name);
       return { ...prev, styles: next };
     });
   };
@@ -225,20 +342,39 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
   const toggleService = (name: string) => {
     setForm((prev) => {
       const next = new Set(prev.services);
-      if (next.has(name)) next.delete(name);
-      else next.add(name);
+      next.has(name) ? next.delete(name) : next.add(name);
       return { ...prev, services: next };
     });
   };
 
+  /**
+   * Toggle a ceremony event on/off.
+   * Required events (e.g. the wedding ceremony itself) cannot be toggled.
+   */
+  const toggleEvent = (type: string) => {
+    setForm((prev) => ({
+      ...prev,
+      events: prev.events.map((e) =>
+        e.type === type && !e.required
+          ? { ...e, included: !e.included }
+          : e
+      ),
+    }));
+  };
+
+  // ── Review rows (Step 5) ──────────────────────────────────────────────────
   const reviewRows = useMemo(() => {
     const dateStr = form.weddingDate
       ? new Date(form.weddingDate).toLocaleDateString("en-IN", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        })
+        day: "numeric", month: "long", year: "numeric",
+      })
       : "—";
+
+    const includedEvents = form.events
+      .filter((e) => e.included)
+      .map((e) => e.name)
+      .join(", ");
+
     return [
       { label: "The couple", value: `${form.p1name || "—"} & ${form.p2name || "—"}` },
       { label: "City", value: form.city || "—" },
@@ -246,6 +382,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
       { label: "Wedding date", value: dateStr },
       { label: "Guests", value: form.guests || "—" },
       { label: "Budget", value: formatBudget(form.budget) },
+      { label: "Events", value: includedEvents || "—" },
       { label: "Styles", value: form.styles.size ? [...form.styles].join(", ") : "—" },
       { label: "Priorities", value: form.services.size ? [...form.services].join(", ") : "—" },
     ];
@@ -253,12 +390,15 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
 
   const dateStr = form.weddingDate
     ? new Date(form.weddingDate).toLocaleDateString("en-IN", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })
+      day: "numeric", month: "long", year: "numeric",
+    })
     : "TBD";
 
+  // ── Sorted events for display (chronological) ─────────────────────────────
+  const sortedEvents = [...form.events].sort((a, b) => a.daysBefore - b.daysBefore);
+  const includedCount = form.events.filter((e) => e.included).length;
+
+  // ─────────────────────────────────────────────────────────────────────────
   return (
     <AnimatePresence>
       {open ? (
@@ -277,13 +417,8 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
             exit={{ opacity: 0, y: 24, scale: 0.97 }}
             transition={{ duration: 0.4, ease: [0.34, 1.36, 0.64, 1] }}
           >
-            {/* Close button */}
-            <button
-              className="pf-close"
-              type="button"
-              aria-label="Close"
-              onClick={handleClose}
-            />
+            {/* Close */}
+            <button className="pf-close" type="button" aria-label="Close" onClick={handleClose} />
 
             {/* Inner border decoration */}
             <div className="pf-border-decor" />
@@ -293,7 +428,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
               <div className="pf-ornament-row">
                 <span className="pf-orn-line" />
                 <span className="pf-orn-diamond" />
-                <span className="pf-orn-center">✦ ShaadiMe ✦</span>
+                <BrandLogo className="pf-orn-logo" />
                 <span className="pf-orn-diamond" />
                 <span className="pf-orn-line" />
               </div>
@@ -321,6 +456,8 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
             <div className="pf-body" ref={bodyRef}>
               <AnimatePresence mode="wait">
                 {submitted ? (
+
+                  /* ── SUCCESS ── */
                   <motion.div
                     key="success"
                     className="pf-success"
@@ -332,9 +469,8 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                     <span className="pf-success-ornament">✦</span>
                     <h2 className="pf-success-title">Your planning begins</h2>
                     <p className="pf-success-sub">
-                      Your dedicated planner will reach out within 24 hours to
-                      schedule your first conversation. Your AI wedding report
-                      is being prepared.
+                      Your dedicated planner will reach out within 24 hours.
+                      Your AI wedding report — covering all {includedCount} events — is being prepared.
                     </p>
                     <div className="pf-review-card">
                       <div className="pf-review-row">
@@ -354,12 +490,18 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                         <span>{formatBudget(form.budget)}</span>
                       </div>
                       <div className="pf-review-row">
+                        <span>Events planned</span>
+                        <span>{includedCount} ceremonies</span>
+                      </div>
+                      <div className="pf-review-row">
                         <span>Report status</span>
                         <span className="pf-generating">Generating…</span>
                       </div>
                     </div>
                   </motion.div>
+
                 ) : (
+
                   <motion.div
                     key={step}
                     initial={{ opacity: 0, y: 16 }}
@@ -367,7 +509,10 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                     exit={{ opacity: 0, y: -12 }}
                     transition={{ duration: 0.25 }}
                   >
-                    {/* ── STEP 1: THE COUPLE ── */}
+
+                    {/* ══════════════════════════════════════════
+                        STEP 1 — THE COUPLE  (unchanged)
+                    ══════════════════════════════════════════ */}
                     {step === 0 && (
                       <div className="pf-step-panel">
                         <div className="pf-step-heading">
@@ -384,6 +529,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                           <span className="pf-divider-mark">✦</span>
                           <span className="pf-divider-line" />
                         </div>
+
                         <div className="pf-field-row">
                           <div className="pf-field">
                             <label>Partner 1 — name</label>
@@ -404,6 +550,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                             />
                           </div>
                         </div>
+
                         <div className="pf-field-row">
                           <div className="pf-field">
                             <label>Your email</label>
@@ -424,6 +571,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                             />
                           </div>
                         </div>
+
                         <div className="pf-field-row">
                           <div className="pf-field">
                             <label>Community / tradition</label>
@@ -450,10 +598,42 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                             </select>
                           </div>
                         </div>
+
+                        {/* ── Ceremony sequence preview — shown as soon as community is picked ── */}
+                        <AnimatePresence>
+                          {form.community && form.events.length > 0 && (
+                            <motion.div
+                              className="pf-events-preview"
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.3, ease: "easeOut" }}
+                            >
+                              <p className="pf-events-preview-label">
+                                Your{" "}
+                                <strong>{form.community}</strong> wedding typically includes{" "}
+                                <strong>{form.events.length} ceremonies</strong> — you can
+                                confirm or adjust these on the next step.
+                              </p>
+                              <div className="pf-events-preview-pills">
+                                {sortedEvents.map((e) => (
+                                  <span
+                                    key={e.type}
+                                    className={`pf-event-preview-pill${e.required ? " required" : ""}`}
+                                  >
+                                    {e.name}
+                                  </span>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     )}
 
-                    {/* ── STEP 2: THE DAY ── */}
+                    {/* ══════════════════════════════════════════
+                        STEP 2 — THE DAY + CEREMONY SEQUENCE
+                    ══════════════════════════════════════════ */}
                     {step === 1 && (
                       <div className="pf-step-panel">
                         <div className="pf-step-heading">
@@ -470,6 +650,8 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                           <span className="pf-divider-mark">✦</span>
                           <span className="pf-divider-line" />
                         </div>
+
+                        {/* Existing date / guest / venue / budget fields — unchanged */}
                         <div className="pf-field-row">
                           <div className="pf-field">
                             <label>Wedding date</label>
@@ -480,7 +662,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                             />
                           </div>
                           <div className="pf-field">
-                            <label>Guest count</label>
+                            <label>Guest count (main ceremony)</label>
                             <select
                               value={form.guests}
                               onChange={(e) => updateField("guests", e.target.value)}
@@ -492,6 +674,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                             </select>
                           </div>
                         </div>
+
                         <div className="pf-field-row pf-full">
                           <div className="pf-field">
                             <label>Venue type preference</label>
@@ -506,13 +689,12 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                             </select>
                           </div>
                         </div>
+
                         <div className="pf-field-row pf-full" style={{ marginTop: 4 }}>
                           <div className="pf-field">
-                            <label>Total wedding budget</label>
+                            <label>Total wedding budget (across all events)</label>
                             <div className="pf-budget-display">
-                              <span className="pf-budget-val">
-                                {formatBudget(form.budget)}
-                              </span>
+                              <span className="pf-budget-val">{formatBudget(form.budget)}</span>
                               <span className="pf-budget-label">estimated total</span>
                             </div>
                             <div className="pf-range-wrap">
@@ -527,9 +709,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                                     "--track-fill": `${((form.budget - 3) / (200 - 3)) * 100}%`,
                                   } as React.CSSProperties
                                 }
-                                onChange={(e) =>
-                                  updateField("budget", parseInt(e.target.value))
-                                }
+                                onChange={(e) => updateField("budget", parseInt(e.target.value))}
                               />
                             </div>
                             <div className="pf-range-labels">
@@ -538,22 +718,76 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                             </div>
                           </div>
                         </div>
+
+                        {/* ── NEW: Ceremony sequence confirmation ─────────────────────────────── */}
+                        {form.events.length > 0 && (
+                          <div className="pf-events-section">
+                            <div className="pf-events-header">
+                              <span className="pf-events-title">
+                                Your ceremony sequence
+                              </span>
+                              <span className="pf-events-count">
+                                {includedCount} of {form.events.length} selected
+                              </span>
+                            </div>
+                            <p className="pf-events-hint">
+                              We've pre-filled your{" "}
+                              <strong>{form.community}</strong> wedding sequence.
+                              Toggle off any ceremonies you're not having.
+                            </p>
+
+                            <div className="pf-events-grid">
+                              {sortedEvents.map((event) => (
+                                <button
+                                  key={event.type}
+                                  type="button"
+                                  disabled={event.required}
+                                  onClick={() => toggleEvent(event.type)}
+                                  className={[
+                                    "pf-event-card",
+                                    event.included ? "included" : "excluded",
+                                    event.required ? "required" : "",
+                                  ]
+                                    .filter(Boolean)
+                                    .join(" ")}
+                                >
+                                  <span className="pf-event-name">{event.name}</span>
+                                  <span className="pf-event-timing">
+                                    {timingLabel(event.daysBefore)}
+                                  </span>
+                                  {event.required ? (
+                                    <span className="pf-event-badge required-badge">
+                                      anchor
+                                    </span>
+                                  ) : (
+                                    <span className="pf-event-toggle">
+                                      {event.included ? "✓" : "+"}
+                                    </span>
+                                  )}
+                                </button>
+                              ))}
+                            </div>
+
+                            <p className="pf-events-footnote">
+                              Your planner will discuss per-event venues, guest
+                              counts, and budget splits with you in the first call.
+                            </p>
+                          </div>
+                        )}
                       </div>
                     )}
 
-                    {/* ── STEP 3: YOUR VISION ── */}
+                    {/* ══════════════════════════════════════════
+                        STEP 3 — YOUR VISION  (unchanged)
+                    ══════════════════════════════════════════ */}
                     {step === 2 && (
                       <div className="pf-step-panel">
                         <div className="pf-step-heading">
-                          <span className="pf-step-eyebrow">
-                            A picture worth a thousand words
-                          </span>
+                          <span className="pf-step-eyebrow">A picture worth a thousand words</span>
                           <h2 className="pf-step-title">
                             Choose the moods<br /><em>that feel like you</em>
                           </h2>
-                          <p className="pf-step-sub">
-                            Pick all that resonate — no wrong answers
-                          </p>
+                          <p className="pf-step-sub">Pick all that resonate — no wrong answers</p>
                         </div>
                         <div className="pf-divider">
                           <span className="pf-divider-line" />
@@ -578,7 +812,9 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                       </div>
                     )}
 
-                    {/* ── STEP 4: PRIORITIES ── */}
+                    {/* ══════════════════════════════════════════
+                        STEP 4 — PRIORITIES  (unchanged)
+                    ══════════════════════════════════════════ */}
                     {step === 3 && (
                       <div className="pf-step-panel">
                         <div className="pf-step-heading">
@@ -621,7 +857,9 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                       </div>
                     )}
 
-                    {/* ── STEP 5: CONFIRM ── */}
+                    {/* ══════════════════════════════════════════
+                        STEP 5 — CONFIRM  (events row added)
+                    ══════════════════════════════════════════ */}
                     {step === 4 && (
                       <div className="pf-step-panel">
                         <div className="pf-step-heading">
@@ -638,6 +876,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                           <span className="pf-divider-mark">✦</span>
                           <span className="pf-divider-line" />
                         </div>
+
                         <div className="pf-review-card">
                           {reviewRows.map((r) => (
                             <div key={r.label} className="pf-review-row">
@@ -646,6 +885,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                             </div>
                           ))}
                         </div>
+
                         <div className="pf-field-row pf-full">
                           <div className="pf-field">
                             <label>How did you hear about ShaadiMe?</label>
@@ -660,6 +900,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                             </select>
                           </div>
                         </div>
+
                         <div className="pf-privacy-notice">
                           <p>
                             By submitting this form you agree to be contacted by
@@ -670,6 +911,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
                         </div>
                       </div>
                     )}
+
                   </motion.div>
                 )}
               </AnimatePresence>

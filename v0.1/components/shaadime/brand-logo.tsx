@@ -12,7 +12,7 @@ export function BrandLogo({ className = "", priority = false }: BrandLogoProps) 
       className={className}
       height={500}
       priority={priority}
-      src="/ShaadiMe Logo.png"
+      src="/ShaadiMe_Logo.png"
       width={500}
     />
   );

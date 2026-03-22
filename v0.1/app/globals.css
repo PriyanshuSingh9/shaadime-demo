@@ -1707,13 +1707,12 @@ img {
   transform: rotate(45deg);
   flex-shrink: 0;
 }
-.pf-orn-center {
-  font-family: var(--font-cormorant), serif;
-  font-size: 17px;
-  color: var(--blush);
-  letter-spacing: 0.12em;
-  font-weight: 300;
-  font-style: italic;
+.pf-orn-logo {
+  max-width: 140px !important;
+  height: 24px !important;
+  width: auto !important;
+  margin: 0 16px;
+  object-fit: contain;
   flex-shrink: 0;
 }
 .pf-top-title {
@@ -2180,24 +2179,13 @@ img {
   padding: 12px 28px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition: transform 0.15s;
   display: flex;
   align-items: center;
   gap: 8px;
   position: relative;
   overflow: hidden;
 }
-.pf-btn-next::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--coral);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 0;
-}
-.pf-btn-next:hover::before { transform: scaleX(1); }
 .pf-btn-next span { position: relative; z-index: 1; }
 .pf-btn-next::after {
   content: "→";
@@ -2208,10 +2196,6 @@ img {
 
 .pf-btn-submit {
   background: var(--coral);
-}
-.pf-btn-submit::before { display: none; }
-.pf-btn-submit:hover {
-  background: #e04545;
 }
 
 .pf-step-counter {
@@ -2635,4 +2619,222 @@ img {
   .hero-controls {
     margin-bottom: 50px;
   }
+}
+
+/*
+  ─────────────────────────────────────────────────────────────
+  PlanningModal — ceremony events additions
+  Add these to your existing planning-modal.css / globals.css
+  alongside your existing .pf-* rules.
+  ─────────────────────────────────────────────────────────────
+*/
+
+/* ── Step 1 preview strip ──────────────────────────────────── */
+
+.pf-events-preview {
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: var(--ivory-2, #f2ebe0);
+  border: 1px solid var(--border, rgba(180,150,100,0.25));
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.pf-events-preview-label {
+  font-size: 12px;
+  color: var(--ink-3, #6b5547);
+  line-height: 1.55;
+  margin: 0 0 10px;
+}
+
+.pf-events-preview-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pf-event-preview-pill {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--ivory, #faf6f0);
+  border: 1px solid var(--border-2, rgba(180,150,100,0.45));
+  color: var(--ink-2, #3d2e24);
+}
+
+.pf-event-preview-pill.required {
+  background: var(--ink, #1c1510);
+  border-color: var(--ink, #1c1510);
+  color: var(--gold-light, #d4ae5c);
+}
+
+/* ── Step 2 ceremony section ───────────────────────────────── */
+
+.pf-events-section {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border, rgba(180,150,100,0.25));
+}
+
+.pf-events-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.pf-events-title {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-3, #6b5547);
+}
+
+.pf-events-count {
+  font-size: 11px;
+  color: var(--saffron, #c8762a);
+  font-weight: 500;
+}
+
+.pf-events-hint {
+  font-size: 12px;
+  color: var(--ink-3, #6b5547);
+  line-height: 1.55;
+  margin: 0 0 14px;
+  opacity: 0.8;
+}
+
+/* Grid: 2 columns on wide, 1 column on narrow */
+.pf-events-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 400px) {
+  .pf-events-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Individual event card (togglable) */
+.pf-event-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border-2, rgba(180,150,100,0.45));
+  background: var(--ivory-2, #f2ebe0);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.18s, background 0.18s, opacity 0.18s;
+  position: relative;
+  /* min-height so cards don't jump when toggled */
+  min-height: 64px;
+}
+
+.pf-event-card:focus-visible {
+  outline: 2px solid var(--saffron, #c8762a);
+  outline-offset: 2px;
+}
+
+/* Included (default active state) */
+.pf-event-card.included {
+  background: var(--ivory, #faf6f0);
+  border-color: var(--gold, #b5943a);
+}
+
+/* Excluded (toggled off) */
+.pf-event-card.excluded {
+  opacity: 0.45;
+  background: var(--ivory-3, #e8ddd0);
+  border-color: var(--border, rgba(180,150,100,0.25));
+}
+
+/* Required (anchor — can't be toggled) */
+.pf-event-card.required {
+  cursor: default;
+  background: var(--ink, #1c1510);
+  border-color: var(--ink, #1c1510);
+}
+
+.pf-event-card.required.included {
+  opacity: 1;
+}
+
+.pf-event-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2, #3d2e24);
+  font-family: var(--serif, 'Cormorant Garamond', Georgia, serif);
+  line-height: 1.2;
+}
+
+.pf-event-card.required .pf-event-name {
+  color: var(--gold-light, #d4ae5c);
+}
+
+.pf-event-card.excluded .pf-event-name {
+  color: var(--ink-3, #6b5547);
+}
+
+.pf-event-timing {
+  font-size: 10px;
+  color: var(--ink-3, #6b5547);
+  opacity: 0.7;
+  letter-spacing: 0.02em;
+}
+
+.pf-event-card.required .pf-event-timing {
+  color: var(--parchment, #d4c4ae);
+  opacity: 0.6;
+}
+
+/* Toggle indicator (top-right corner) */
+.pf-event-toggle {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gold, #b5943a);
+  line-height: 1;
+}
+
+.pf-event-card.excluded .pf-event-toggle {
+  color: var(--ink-3, #6b5547);
+  opacity: 0.5;
+}
+
+/* Badge for required anchor event */
+.pf-event-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+.pf-event-badge.required-badge {
+  background: rgba(181, 148, 58, 0.2);
+  color: var(--gold-light, #d4ae5c);
+}
+
+/* Footnote below the events grid */
+.pf-events-footnote {
+  font-size: 11px;
+  color: var(--ink-3, #6b5547);
+  opacity: 0.6;
+  line-height: 1.55;
+  margin: 0;
+  font-style: italic;
 }
