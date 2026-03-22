@@ -18,7 +18,11 @@ import { SiteHeader } from "./site-header";
 import { SiteFooter } from "./site-footer";
 import { Heart } from "lucide-react";
 
-export function LandingPage() {
+type LandingPageProps = {
+  onFormSubmit?: (form: any) => void;
+};
+
+export function LandingPage({ onFormSubmit }: LandingPageProps) {
   const [plannerOpen, setPlannerOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -405,7 +409,7 @@ export function LandingPage() {
 
       <SiteFooter onOpenPlanner={openPlanner} />
 
-      <PlanningModal open={plannerOpen} onClose={() => setPlannerOpen(false)} />
+      <PlanningModal open={plannerOpen} onClose={() => setPlannerOpen(false)} onSubmit={onFormSubmit} />
     </>
   );
 }

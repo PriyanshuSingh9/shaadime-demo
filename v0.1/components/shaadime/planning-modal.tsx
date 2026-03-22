@@ -21,6 +21,7 @@ type CeremonyEvent = {
 type PlanningModalProps = {
   open: boolean;
   onClose: () => void;
+  onSubmit?: (form: FormState) => void;
 };
 
 type FormState = {
@@ -266,7 +267,7 @@ const initialState: FormState = {
 // Component
 // ─────────────────────────────────────────────
 
-export function PlanningModal({ open, onClose }: PlanningModalProps) {
+export function PlanningModal({ open, onClose, onSubmit }: PlanningModalProps) {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState<FormState>({
@@ -321,7 +322,7 @@ export function PlanningModal({ open, onClose }: PlanningModalProps) {
 
   const nextStep = () => {
     if (step < TOTAL_STEPS - 1) goToStep(step + 1);
-    else setSubmitted(true);
+    else { onSubmit?.(form); handleClose(); }
   };
 
   const prevStep = () => { if (step > 0) goToStep(step - 1); };
