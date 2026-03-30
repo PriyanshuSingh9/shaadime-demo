@@ -1,21 +1,27 @@
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@/lib/generated/prisma/client";
-import { Pool } from "@neondatabase/serverless";
-import { PrismaNeon } from "@prisma/adapter-neon";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-function getPrismaClient(): PrismaClient {
-  if (!globalForPrisma.prisma) {
-    const url = process.env.DATABASE_URL;
-    console.log("[db] Creating Prisma client, DATABASE_URL:", url ? url.substring(0, 40) + "..." : "MISSING");
-    const pool = new Pool({ connectionString: url });
-    const adapter = new PrismaNeon(pool as any);
-    globalForPrisma.prisma = new PrismaClient({ adapter });
+const connectionString = process.env.DATABASE_URL;
+
+function createPrismaClient() {
+  if (!connectionString) {
+    throw new Error("DATABASE_URL is not set");
   }
-  return globalForPrisma.prisma;
+  const pool = new Pool({
+    connectionString,
+    ssl: { rejectUnauthorized: false }
+  });
+  const adapter = new PrismaPg(pool);
+  return new PrismaClient({ adapter });
 }
 
-// Export a getter so the client is always fresh
-export { getPrismaClient };
+export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
+}
