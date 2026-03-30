@@ -30,6 +30,11 @@ const josefinLabel = Josefin_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000"
+  ),
   title: "ShaadiMe | Wedding Planning For Modern Indian Couples",
   description:
     "ShaadiMe is a wedding planning partner for modern Indian couples. Tell us what you want, and arrive at your wedding like a guest.",
