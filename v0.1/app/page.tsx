@@ -16,6 +16,34 @@ export default function Page() {
   const [report, setReport] = useState<ReportData | null>(null);
 
   const handleFormSubmit = useCallback((form: any) => {
+    // Save all form fields to the database (fire-and-forget)
+    const inquiryPayload = {
+      p1name: form.p1name,
+      p2name: form.p2name,
+      email: form.email ?? "",
+      phone: form.phone ?? "",
+      community: form.community,
+      city: form.city,
+      weddingDate: form.weddingDate,
+      guests: form.guests,
+      venueType: form.venueType ?? "",
+      budget: form.budget,
+      styles: [...(form.styles as Set<string>)],
+      services: [...(form.services as Set<string>)],
+      events: (form.events ?? []).map(({ type, name, daysBefore, included }: any) => ({
+        type, name, daysBefore, included,
+      })),
+      notes: form.notes ?? "",
+      referral: form.referral ?? "",
+    };
+
+    fetch("/api/save-inquiry", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(inquiryPayload),
+    }).catch((err) => console.error("[save-inquiry]", err));
+
+    // Build report request (subset of form data) and proceed
     const req: GenerateReportRequest = {
       p1name: form.p1name,
       p2name: form.p2name,

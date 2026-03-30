@@ -1,0 +1,43 @@
+// ShaadiMe – Wedding Planning Form Submissions
+// Uses Neon PostgreSQL via Prisma
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model WeddingInquiry {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // ── The Couple ──
+  p1name    String   @map("p1_name")
+  p2name    String   @map("p2_name")
+  email     String
+  phone     String
+
+  // ── Wedding Details ──
+  community   String
+  city        String
+  weddingDate String?  @map("wedding_date")  // ISO date string from form
+  guests      String                          // label like "150 – 300"
+  venueType   String   @map("venue_type")
+  budget      Int                             // in lakhs (slider value)
+
+  // ── Vision & Priorities ──
+  styles    String[]                          // array of selected style names
+  services  String[]                          // array of selected service priorities
+
+  // ── Ceremony Events (stored as JSON) ──
+  events    Json     @default("[]")           // array of {type, name, daysBefore, included}
+
+  // ── Additional ──
+  notes     String   @default("")
+  referral  String   @default("")
+
+  @@map("wedding_inquiries")
+}

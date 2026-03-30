@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { Heart, Star, MapPin, Sparkles } from "lucide-react";
 import type { ReportData, EventReport, VendorSuggestion } from "@/lib/types/report";
 import type { GenerateReportRequest } from "@/lib/types/report";
 
@@ -87,47 +88,69 @@ function MatchRing({ score, size = 44 }: { score: number; size?: number }) {
 // Vendor card — clickable body opens drawer, separate shortlist button
 // ─────────────────────────────────────────────────────────────────────────────
 
-function VendorCard({
-  vendor,
-  shortlisted,
-  onToggle,
-  onClick,
-}: {
+function VendorCard({ vendor, shortlisted, onToggle, onClick }: {
   vendor: VendorSuggestion;
   shortlisted: boolean;
   onToggle: (v: VendorSuggestion) => void;
   onClick: (v: VendorSuggestion) => void;
 }) {
+  const IMG_MAP: Record<string, string> = {
+    Venue: "1519197490774-4051a7447d67",
+    Photographer: "1537633552985-df8429e8048b",
+    Decorator: "1511795409834-ef04bbd61622",
+    Catering: "1555244162-803834f70033",
+    Makeup: "1487412720507-e7ab37603c6f",
+    Invitations: "1515934751635-c81c6bc9a2d8",
+  };
+  const photoId = IMG_MAP[vendor.category] || "1519741497674-611481863552";
+  const imageUrl = `https://images.unsplash.com/photo-${photoId}?auto=format&fit=crop&q=80&w=800`;
+
   return (
     <motion.div
       className={`vc-card${shortlisted ? " vc-card--sl" : ""}`}
       layout
-      initial={{ opacity: 0, y: 14 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25 }}
+      variants={{
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0 }
+      }}
     >
-      <button type="button" className="vc-body-btn" onClick={() => onClick(vendor)}>
-        <div className="vc-header">
-          <span className="vc-cat">{vendor.category}</span>
-          <MatchRing score={vendor.match_score} size={38} />
-        </div>
-        <p className="vc-name">{vendor.name}</p>
-        <p className="vc-city">{vendor.city}</p>
-        <p className="vc-spec">{vendor.specialisation}</p>
-        <p className="vc-note">{vendor.note}</p>
-        <div className="vc-price-row">
-          <span className="vc-price">{vendor.price_range}</span>
-          <span className="vc-lead">{vendor.booking_lead_time}</span>
-        </div>
-        <p className="vc-view-hint">Tap to view details →</p>
-      </button>
-      <button
-        type="button"
-        className={`vc-sl-btn${shortlisted ? " active" : ""}`}
-        onClick={(e) => { e.stopPropagation(); onToggle(vendor); }}
+      <div 
+        className="vc-body-btn" 
+        onClick={() => onClick(vendor)} 
+        style={{ cursor: 'pointer', width: '100%' }}
       >
-        {shortlisted ? "✓ Shortlisted" : "+ Shortlist"}
-      </button>
+        <div className="vc-img-wrap">
+          <Image
+            src={imageUrl}
+            alt={vendor.name}
+            fill
+            className="vc-img"
+            sizes="(max-width: 768px) 100vw, 300px"
+          />
+          <div className="vc-badge">{vendor.category}</div>
+          <div style={{ position: 'absolute', bottom: 12, right: 12 }}>
+            <MatchRing score={vendor.match_score} size={36} />
+          </div>
+        </div>
+
+        <div className="vc-content">
+          <p className="vc-name">{vendor.name}</p>
+          <p className="vc-loc">{vendor.city} · {vendor.specialisation}</p>
+          <p className="vc-price">{vendor.price_range}</p>
+
+          <div className="vc-actions">
+            <div className="vc-btn-view">View Details</div>
+            <button
+              type="button"
+              className={`vc-btn-sl${shortlisted ? " active" : ""}`}
+              onClick={(e) => { e.stopPropagation(); onToggle(vendor); }}
+              aria-label={shortlisted ? "Remove from shortlist" : "Add to shortlist"}
+            >
+              <Heart size={16} fill={shortlisted ? "currentColor" : "none"} />
+            </button>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 }
@@ -392,11 +415,19 @@ function EventPanel({
   onToggle: (v: VendorSuggestion, eventName: string) => void;
   onView: (v: VendorSuggestion, eventName: string) => void;
 }) {
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08 }
+    }
+  };
+
   return (
-    <div className="ep-root">
+    <motion.div className="ev-root" variants={container} initial="hidden" animate="show">
       <div className="ep-header">
         <div>
-          <h2 className="ep-name">{event.name}</h2>
+          <h2 className="ep-name" style={{ fontFamily: 'serif', fontSize: '28px', marginBottom: '8px' }}>{event.name}</h2>
           <p className="ep-meta">
             <span>{event.event_date_label}</span>
             <span className="ep-dot">·</span>
@@ -414,17 +445,16 @@ function EventPanel({
       </div>
 
       {event.key_consideration && (
-        <div className="ep-insight">
+        <motion.div className="ep-insight" variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0 } }}>
           <span className="ep-insight-orn">✦</span>
           <p className="ep-insight-text">{event.key_consideration}</p>
-        </div>
+        </motion.div>
       )}
-      {event.budget_note && <p className="ep-budget-note">{event.budget_note}</p>}
 
       {(event.venue_suggestions?.length ?? 0) > 0 && (
         <div className="ep-section">
-          <h3 className="ep-sec-title">Venues</h3>
-          <div className="ep-grid">
+          <h3 className="ep-sec-title">Recommended Venues</h3>
+          <motion.div className="ev-grid" variants={container}>
             {event.venue_suggestions!.map((v) => (
               <VendorCard key={v.id} vendor={v}
                 shortlisted={!!shortlist[v.id]}
@@ -432,13 +462,14 @@ function EventPanel({
                 onClick={(ven) => onView(ven, event.name)}
               />
             ))}
-          </div>
+          </motion.div>
         </div>
       )}
+
       {(event.vendors?.length ?? 0) > 0 && (
         <div className="ep-section">
-          <h3 className="ep-sec-title">Vendors</h3>
-          <div className="ep-grid">
+          <h3 className="ep-sec-title">Vendor Shortlist</h3>
+          <motion.div className="ev-grid" variants={container}>
             {event.vendors!.map((v) => (
               <VendorCard key={v.id} vendor={v}
                 shortlisted={!!shortlist[v.id]}
@@ -446,13 +477,10 @@ function EventPanel({
                 onClick={(ven) => onView(ven, event.name)}
               />
             ))}
-          </div>
+          </motion.div>
         </div>
       )}
-      {!event.venue_suggestions?.length && !event.vendors?.length && (
-        <p className="ep-empty">Vendor suggestions for this event are being prepared.</p>
-      )}
-    </div>
+    </motion.div>
   );
 }
 
@@ -521,7 +549,8 @@ function TimelineTab({ report }: { report: ReportData }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function Dashboard({ report, request, onBack }: Props) {
-  const [activeTab, setActiveTab] = useState<string>(report.events[0]?.type ?? "browse");
+  const [view, setView] = useState<"planning" | "vendors">("planning");
+  const [activeTab, setActiveTab] = useState<string>(report.events[0]?.type ?? "budget");
   const [shortlist, setShortlist] = useState<ShortlistMap>({});
   const [drawer, setDrawer] = useState<{ vendor: VendorSuggestion; eventName: string } | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -546,15 +575,19 @@ export function Dashboard({ report, request, onBack }: Props) {
   }, []);
 
   const entries = useMemo(() => Object.values(shortlist), [shortlist]);
-  const count   = entries.length;
+  const count = entries.length;
 
   const drawerShortlisted = drawer ? !!shortlist[drawer.vendor.id] : false;
-  const drawerNote        = drawer ? (shortlist[drawer.vendor.id]?.note ?? "") : "";
+  const drawerNote = drawer ? (shortlist[drawer.vendor.id]?.note ?? "") : "";
 
-  const tabs = [
+  const mainViews = [
+    { key: "planning", label: "Wedding Planning" },
+    { key: "vendors", label: "Find Vendors" },
+  ];
+
+  const planningTabs = [
     ...report.events.map((e) => ({ key: e.type, label: e.name })),
-    { key: "browse",   label: "Browse all" },
-    { key: "budget",   label: "Budget" },
+    { key: "budget", label: "Budget" },
     { key: "timeline", label: "Timeline" },
   ];
 
@@ -565,37 +598,37 @@ export function Dashboard({ report, request, onBack }: Props) {
       {/* Top bar */}
       <div className="db-topbar">
         <div className="db-topbar-left">
-            <div className="db-topbar-brand">
-                <Image
-                    src="/ShaadiMe_Logo.png"
-                    alt="ShaadiMe"
-                    width={110}
-                    height={34}
-                    priority
-                    style={{ objectFit: 'contain' }}
-                />
-            </div>
+          <div className="db-topbar-brand">
+            <Image
+              src="/ShaadiMe_Logo.png"
+              alt="ShaadiMe"
+              width={110}
+              height={34}
+              priority
+              style={{ objectFit: 'contain' }}
+            />
+          </div>
         </div>
-        
+
         <div className="db-topbar-center">
-            <p className="db-couple">{request.p1name} &amp; {request.p2name}</p>
-            <p className="db-meta">{request.community} wedding · {request.city}</p>
+          <p className="db-couple">{request.p1name} &amp; {request.p2name}</p>
+          <p className="db-meta">{request.community} wedding · {request.city}</p>
         </div>
 
         <div className="db-topbar-right">
-            {onBack && (
-                <button type="button" onClick={onBack} className="db-back-btn" style={{ marginLeft: "auto", marginRight: "16px" }}>
-                    Back →
-                </button>
-            )}
-            <button
+          {onBack && (
+            <button type="button" onClick={onBack} className="db-back-btn" style={{ marginLeft: "auto", marginRight: "16px" }}>
+              Back →
+            </button>
+          )}
+          <button
             type="button"
             className={`db-sl-pill${count > 0 ? " active" : ""}`}
             onClick={() => setPanelOpen(true)}
             disabled={count === 0}
-            >
+          >
             {count > 0 ? `${count} shortlisted` : "Shortlist"}
-            </button>
+          </button>
         </div>
       </div>
 
@@ -611,32 +644,56 @@ export function Dashboard({ report, request, onBack }: Props) {
         )}
       </div>
 
-      {/* Tab nav */}
-      <div className="db-tabnav-wrap">
-        <div className="db-tabnav">
-          {tabs.map((t) => (
-            <button key={t.key} type="button"
-              className={`db-tab${activeTab === t.key ? " active" : ""}`}
-              onClick={() => setActiveTab(t.key)}
-            >{t.label}</button>
+      {/* View Switcher */}
+      <div className="db-viewnav-wrap">
+        <div className="db-viewnav">
+          {mainViews.map((v) => (
+            <button key={v.key} type="button"
+              className={`db-view-btn${view === v.key ? " active" : ""}`}
+              onClick={() => setView(v.key as "planning" | "vendors")}
+            >
+              <span className="db-view-dot" />
+              {v.label}
+            </button>
           ))}
         </div>
       </div>
+
+      {/* Sub-Tab nav (only for planning) */}
+      <AnimatePresence>
+        {view === "planning" && (
+          <motion.div
+            className="db-tabnav-wrap"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+          >
+            <div className="db-tabnav">
+              {planningTabs.map((t) => (
+                <button key={t.key} type="button"
+                  className={`db-tab${activeTab === t.key ? " active" : ""}`}
+                  onClick={() => setActiveTab(t.key)}
+                >{t.label}</button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Content */}
       <div className="db-content">
         <AnimatePresence mode="wait">
           <motion.div
-            key={activeTab}
+            key={`${view}-${activeTab}`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
           >
-            {activeEvent ? (
-              <EventPanel event={activeEvent} shortlist={shortlist} onToggle={toggleShortlist} onView={openDrawer} />
-            ) : activeTab === "browse" ? (
+            {view === "vendors" ? (
               <BrowseAllTab report={report} shortlist={shortlist} onToggle={toggleShortlist} onView={openDrawer} />
+            ) : activeEvent ? (
+              <EventPanel event={activeEvent} shortlist={shortlist} onToggle={toggleShortlist} onView={openDrawer} />
             ) : activeTab === "budget" ? (
               <BudgetTab report={report} />
             ) : (
@@ -685,32 +742,39 @@ export function Dashboard({ report, request, onBack }: Props) {
           />
         )}
       </AnimatePresence>
-      
+
       <style>{`
         
-        .db-root{min-height:100vh;background:var(--background, #fdfaf9);font-family:inherit;padding-bottom:100px}
-        .db-topbar{position:sticky;top:0;z-index:50;background:var(--purple-dark, #300b2e);backdrop-filter:blur(8px);border-bottom:1px solid rgba(229, 152, 155, 0.15);display:flex;align-items:center;justify-content:space-between;padding:12px 20px;gap:12px}
-        .db-brand{display:flex;align-items:center;gap:6px;flex-shrink:0}
-        .db-orn{color:var(--blush, #e5989b);font-size:11px}
-        .db-brandname{font-family:inherit;font-size:15px;font-weight:400;letter-spacing:0.1em;color:var(--blush, #e5989b)}
-        .db-center{text-align:center;flex:1;min-width:0}
-        .db-couple{font-family:inherit;font-size:14px;color:var(--background, #fdfaf9);margin:0;font-style:italic;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-        .db-meta{font-size:10px;color:var(--text-muted, #7a5a78);margin:1px 0 0;letter-spacing:0.04em}
+        .db-root{min-height:100vh;background:#fcf9f7;font-family:'DM Sans',system-ui,sans-serif;padding-bottom:120px;color:var(--purple-dark, #300b2e)}
+        .db-topbar{position:sticky;top:0;z-index:100;background:rgba(253, 250, 249, 0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(229, 152, 155, 0.1);padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+        
+        .db-couple{font-family:serif;font-weight:500;font-size:18px;letter-spacing:-0.01em;color:var(--purple-dark, #300b2e);text-align:center}
+        .db-meta{font-size:11px;color:var(--text-muted, #7a5a78);text-transform:uppercase;letter-spacing:0.08em;margin-top:2px;text-align:center}
         .db-sl-pill{font-size:11px;font-weight:500;padding:5px 12px;border-radius:20px;background:rgba(255, 107, 107, 0.1);border:1px solid rgba(255, 107, 107, 0.25);color:var(--coral, #ff6b6b);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background .18s}
         .db-sl-pill.active{background:rgba(255, 107, 107, 0.18);border-color:rgba(255, 107, 107, 0.45)}
         .db-sl-pill:disabled{opacity:0.35;cursor:default}
-        .db-summary-wrap{padding:18px 20px 0;max-width:720px;margin:0 auto}
-        .db-summary{font-family:inherit;font-size:16px;color:var(--text-muted, #7a5a78);line-height:1.65;font-style:italic;margin:0 0 12px}
-        .db-chips{display:flex;flex-wrap:wrap;gap:7px}
-        .db-chip{display:flex;align-items:flex-start;gap:6px;font-size:11px;color:var(--text-muted, #7a5a78);background:var(--background, #fdfaf9);border:1px solid rgba(229, 152, 155, 0.2);border-radius:4px;padding:5px 9px;line-height:1.4}
-        .db-chip-orn{color:var(--blush, #e5989b);flex-shrink:0;font-size:9px;margin-top:1px}
-        .db-tabnav-wrap{position:sticky;top:53px;z-index:40;background:var(--background, #fdfaf9);border-bottom:1px solid rgba(229, 152, 155, 0.15);padding:0 20px;overflow-x:auto;scrollbar-width:none}
+        .db-summary-wrap{padding:40px 24px 24px;max-width:800px;margin:0 auto}
+        .db-summary{font-family:serif;font-size:20px;line-height:1.5;color:var(--purple-dark, #300b2e);margin-bottom:24px;font-style:italic}
+        .db-chips{display:flex;flex-wrap:wrap;gap:10px}
+        .db-chip{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted, #7a5a78);background:white;border:1px solid rgba(229, 152, 155, 0.12);border-radius:100px;padding:6px 14px;box-shadow:0 2px 6px rgba(48, 11, 46, 0.02)}
+        .db-chip-orn{color:var(--coral, #ff6b6b);font-size:10px}
+
+        .db-viewnav-wrap{padding:0 24px;max-width:800px;margin:0 auto}
+        .db-viewnav{display:flex;gap:24px;border-bottom:1px solid rgba(229, 152, 155, 0.08)}
+        .db-view-btn{padding:12px 0;font-size:14px;font-weight:500;color:var(--text-muted, #7a5a78);background:transparent;border:none;cursor:pointer;display:flex;align-items:center;gap:10px;position:relative;transition:all .2s}
+        .db-view-btn.active{color:var(--purple-dark, #300b2e)}
+        .db-view-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--coral, #ff6b6b);border-radius:2px 2px 0 0}
+        .db-view-dot{width:4px;height:4px;border-radius:50%;background:rgba(229, 152, 155, 0.3);transition:background .2s}
+        .db-view-btn.active .db-view-dot{background:var(--coral, #ff6b6b);box-shadow:0 0 8px var(--coral, #ff6b6b)}
+
+        .db-tabnav-wrap{position:sticky;top:63px;z-index:90;background:rgba(253, 250, 249, 0.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(229, 152, 155, 0.08);padding:0 24px;overflow-x:auto;scrollbar-width:none}
         .db-tabnav-wrap::-webkit-scrollbar{display:none}
-        .db-tabnav{display:flex;max-width:720px;margin:0 auto}
-        .db-tab{padding:13px 15px;font-size:11px;color:var(--text-muted, #7a5a78);background:transparent;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:color .2s,border-color .2s}
-        .db-tab:hover{color:var(--text-muted, #7a5a78)}
-        .db-tab.active{color:var(--purple-dark, #300b2e);font-weight:500;border-bottom-color:var(--coral, #ff6b6b)}
-        .db-content{padding:20px;max-width:720px;margin:0 auto}
+        .db-tabnav{display:flex;max-width:800px;margin:0 auto}
+        .db-tab{padding:16px 20px;font-size:13px;font-weight:600;color:var(--text-muted, #7a5a78);background:transparent;border:none;cursor:pointer;white-space:nowrap;position:relative;transition:all .2s;letter-spacing:0.02em}
+        .db-tab.active{color:var(--coral, #ff6b6b)}
+        .db-tab.active::after{content:'';position:absolute;bottom:0;left:20px;right:20px;height:2px;background:var(--coral, #ff6b6b)}
+        .db-tab:hover:not(.active){color:var(--purple-dark, #300b2e)}
+        .db-content{max-width:800px;margin:0 auto;padding:32px 24px}
         /* Event panel */
         .ep-root{display:flex;flex-direction:column;gap:18px}
         .ep-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -785,38 +849,48 @@ export function Dashboard({ report, request, onBack }: Props) {
         .db-float-btn{font-size:11px;font-weight:500;padding:6px 14px;border-radius:20px;background:var(--coral, #ff6b6b);border:none;color:var(--background, #fdfaf9);cursor:pointer;transition:background .18s}
         .db-float-btn:hover{background:var(--blush, #e5989b);color:var(--purple-dark, #300b2e)}
         /* Drawer */
-        .drw-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:90}
-        .drw-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--background, #fdfaf9);border-radius:16px 16px 0 0;z-index:91;max-height:88vh;overflow-y:auto;padding:0 20px 36px}
-        .drw-handle{width:36px;height:4px;background:rgba(229, 152, 155, 0.25);border-radius:2px;margin:10px auto 0}
-        .drw-close{position:absolute;top:14px;right:16px;background:rgba(229, 152, 155, 0.1);border:none;border-radius:50%;width:28px;height:28px;font-size:11px;color:var(--text-muted, #7a5a78);cursor:pointer;display:flex;align-items:center;justify-content:center}
-        .drw-top{padding-top:16px;padding-bottom:14px;border-bottom:1px solid rgba(229, 152, 155, 0.13)}
-        .drw-badges{display:flex;gap:7px;align-items:center;margin-bottom:6px}
-        .drw-cat{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--coral, #ff6b6b)}
-        .drw-event-pill{font-size:9px;color:var(--text-muted, #7a5a78);background:var(--background, #fdfaf9);border-radius:3px;padding:2px 6px}
-        .drw-name{font-family:inherit;font-size:24px;font-weight:400;color:var(--purple-dark, #300b2e);margin:0 0 3px}
-        .drw-city{font-size:11px;color:var(--text-muted, #7a5a78);margin:0}
-        .drw-score-row{display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(229, 152, 155, 0.12)}
-        .drw-score-cell{display:flex;align-items:center;gap:10px}
-        .drw-match-label{font-size:12px;font-weight:500;margin:0}
-        .drw-match-sub{font-size:10px;color:var(--text-muted, #7a5a78);margin:2px 0 0}
+        .drw-backdrop{position:fixed;inset:0;background:rgba(48, 11, 46, 0.4);backdrop-filter:blur(4px);z-index:1000}
+        .drw-sheet{position:fixed;bottom:0;left:0;right:0;background:#fcf9f7;border-radius:32px 32px 0 0;z-index:1001;max-height:92vh;overflow-y:auto;padding:0 24px 48px;box-shadow:0 -12px 40px rgba(48, 11, 46, 0.15)}
+        .drw-handle{width:40px;height:5px;background:rgba(229, 152, 155, 0.2);border-radius:10px;margin:12px auto 0}
+        .drw-close{position:absolute;top:20px;right:24px;background:white;border:1px solid rgba(229, 152, 155, 0.15);border-radius:50%;width:32px;height:32px;font-size:12px;color:var(--text-muted, #7a5a78);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+        .drw-close:hover{background:var(--coral, #ff6b6b);color:white;border-color:var(--coral, #ff6b6b)}
+        
+        .drw-top{padding:32px 0 20px;border-bottom:1px solid rgba(229, 152, 155, 0.08)}
+        .drw-badges{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+        .drw-cat{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--coral, #ff6b6b)}
+        .drw-event-pill{font-size:11px;font-weight:500;color:var(--text-muted, #7a5a78);background:rgba(229, 152, 155, 0.08);padding:4px 10px;border-radius:100px}
+        .drw-name{font-family:serif;font-size:32px;font-weight:600;color:var(--purple-dark, #300b2e);margin:0 0 6px;line-height:1.2}
+        .drw-city{font-size:14px;color:var(--text-muted, #7a5a78);display:flex;align-items:center;gap:6px}
+        
+        .drw-score-row{display:flex;align-items:center;justify-content:space-between;padding:24px 0;border-bottom:1px solid rgba(229, 152, 155, 0.08)}
+        .drw-score-cell{display:flex;align-items:center;gap:16px}
+        .drw-match-label{font-size:16px;font-weight:600;margin:0}
+        .drw-match-sub{font-size:12px;color:var(--text-muted, #7a5a78);margin-top:2px}
         .drw-price-cell{text-align:right}
-        .drw-price{font-size:16px;font-weight:500;color:var(--purple-dark, #300b2e);margin:0}
-        .drw-lead{font-size:10px;color:var(--text-muted, #7a5a78);margin:2px 0 0}
-        .drw-section{padding:12px 0;border-bottom:1px solid rgba(229, 152, 155, 0.1)}
-        .drw-sec-lbl{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted, #7a5a78);margin:0 0 5px}
-        .drw-sec-body{font-size:12px;color:var(--text-muted, #7a5a78);margin:0;line-height:1.55}
-        .drw-insight{display:flex;gap:9px;align-items:flex-start;background:var(--purple-dark, #300b2e);border-radius:6px;padding:11px 13px;border:none;margin-top:2px}
-        .drw-orn{color:var(--blush, #e5989b);font-size:10px;flex-shrink:0;margin-top:2px}
-        .drw-insight-text{color:var(--blush, #e5989b) !important}
-        .drw-notes{width:100%;font-family:inherit;font-size:12px;color:var(--purple-dark, #300b2e);background:var(--background, #fdfaf9);border:1px solid rgba(229, 152, 155, 0.22);border-radius:4px;padding:9px 11px;resize:none;outline:none;box-sizing:border-box}
-        .drw-notes:focus{border-color:rgba(255, 107, 107, 0.4)}
-        .drw-cta{width:100%;margin-top:16px;padding:13px;border-radius:6px;border:1.5px solid rgba(255, 107, 107, 0.38);background:transparent;color:var(--coral, #ff6b6b);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
-        .drw-cta:hover{background:rgba(255, 107, 107, 0.07)}
-        .drw-cta.active{background:var(--purple-dark, #300b2e);border-color:var(--purple-dark, #300b2e);color:var(--blush, #e5989b)}
-        /* Shortlist panel */
-        .sp-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:90}
-        .sp-panel{position:fixed;top:0;right:0;bottom:0;width:min(400px,100vw);background:var(--background, #fdfaf9);z-index:91;display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,0.18)}
-        .sp-header{display:flex;align-items:flex-start;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid rgba(229, 152, 155, 0.15);flex-shrink:0}
+        .drw-price{font-size:20px;font-weight:600;color:var(--purple-dark, #300b2e);margin:0}
+        .drw-lead{font-size:12px;color:var(--text-muted, #7a5a78);margin-top:4px}
+        
+        .drw-section{padding:24px 0;border-bottom:1px solid rgba(229, 152, 155, 0.08)}
+        .drw-sec-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-muted, #7a5a78);margin-bottom:12px;display:block}
+        .drw-sec-body{font-size:14px;color:var(--purple-dark, #300b2e);line-height:1.6;margin:0}
+        
+        .drw-insight{background:var(--purple-dark, #300b2e);border-radius:16px;padding:24px;margin-top:8px;border:none}
+        .drw-orn{color:var(--coral, #ff6b6b);font-size:14px}
+        .drw-insight-text{color:var(--blush, #e5989b) !important;font-style:italic}
+        
+        .drw-notes{width:100%;font-family:inherit;font-size:14px;color:var(--purple-dark, #300b2e);background:white;border:1px solid rgba(229, 152, 155, 0.15);border-radius:12px;padding:16px;resize:none;outline:none;box-sizing:border-box;transition:all .2s;box-shadow:inset 0 2px 4px rgba(0,0,0,0.02)}
+        .drw-notes:focus{border-color:var(--coral, #ff6b6b);box-shadow:0 0 0 3px rgba(255, 107, 107, 0.1)}
+        
+        .drw-cta{width:100%;margin-top:24px;padding:16px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;transition:all .3s cubic-bezier(0.165, 0.84, 0.44, 1);border:1px solid var(--coral, #ff6b6b);background:white;color:var(--coral, #ff6b6b)}
+        .drw-cta:hover{background:var(--coral, #ff6b6b);color:white;box-shadow:0 8px 24px rgba(255, 107, 107, 0.25)}
+        .drw-cta.active{background:var(--purple-dark, #300b2e);border-color:var(--purple-dark, #300b2e);color:var(--blush, #e5989b);box-shadow:0 8px 24px rgba(48, 11, 46, 0.2)}
+        
+        .sp-backdrop{position:fixed;inset:0;background:rgba(48, 11, 46, 0.4);backdrop-filter:blur(4px);z-index:1000}
+        .sp-panel{position:fixed;top:0;right:0;bottom:0;width:min(440px, 100vw);background:#fcf9f7;z-index:1001;display:flex;flex-direction:column;box-shadow:-12px 0 40px rgba(48, 11, 46, 0.15);padding:0}
+        .sp-header{padding:32px 24px;border-bottom:1px solid rgba(229, 152, 155, 0.08);background:white}
+        .sp-title{font-family:serif;font-size:24px;font-weight:600;color:var(--purple-dark, #300b2e);margin:0}
+        .sp-sub{font-size:13px;color:var(--text-muted, #7a5a78);margin-top:4px}
+
         .sp-title{font-family:inherit;font-size:22px;font-weight:400;color:var(--purple-dark, #300b2e);margin:0 0 2px}
         .sp-sub{font-size:11px;color:var(--text-muted, #7a5a78);margin:0}
         .sp-close{background:rgba(229, 152, 155, 0.1);border:none;border-radius:50%;width:30px;height:30px;font-size:11px;color:var(--text-muted, #7a5a78);cursor:pointer;display:flex;align-items:center;justify-content:center}

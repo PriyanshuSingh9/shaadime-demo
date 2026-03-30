@@ -29,7 +29,7 @@ type Props = {
 
 const BASE_STEPS = [
     { label: "Reading your wedding profile", duration: 1400 },
-    { label: "Understanding your traditions", duration: 1600 },
+    { label: "Understanding your wedding traditions", duration: 1600 },
     { label: "Analysing budget across all events", duration: 1500 },
     { label: "Matching venues in", duration: 1400, appendCity: true },
     { label: "Building your ceremony sequence", duration: 1500 },

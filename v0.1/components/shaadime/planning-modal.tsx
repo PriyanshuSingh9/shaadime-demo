@@ -379,7 +379,7 @@ export function PlanningModal({ open, onClose, onSubmit }: PlanningModalProps) {
     return [
       { label: "The couple", value: `${form.p1name || "—"} & ${form.p2name || "—"}` },
       { label: "City", value: form.city || "—" },
-      { label: "Community", value: form.community || "—" },
+      { label: "Wedding tradition", value: form.community || "—" },
       { label: "Wedding date", value: dateStr },
       { label: "Guests", value: form.guests || "—" },
       { label: "Budget", value: formatBudget(form.budget) },
@@ -575,12 +575,12 @@ export function PlanningModal({ open, onClose, onSubmit }: PlanningModalProps) {
 
                         <div className="pf-field-row">
                           <div className="pf-field">
-                            <label>Community / tradition</label>
+                            <label>Wedding tradition</label>
                             <select
                               value={form.community}
                               onChange={(e) => updateField("community", e.target.value)}
                             >
-                              <option value="" disabled>Select your tradition</option>
+                              <option value="" disabled>Select tradition</option>
                               {communities.map((c) => (
                                 <option key={c}>{c}</option>
                               ))}
