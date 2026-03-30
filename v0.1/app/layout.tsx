@@ -66,6 +66,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${josefinPrimary.variable} ${josefinHeading.variable} ${josefinBody.variable} ${josefinLabel.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>

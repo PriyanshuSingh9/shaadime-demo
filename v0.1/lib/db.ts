@@ -6,14 +6,16 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-function createPrismaClient() {
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-  const adapter = new PrismaNeon(pool as any);
-  return new PrismaClient({ adapter });
+function getPrismaClient(): PrismaClient {
+  if (!globalForPrisma.prisma) {
+    const url = process.env.DATABASE_URL;
+    console.log("[db] Creating Prisma client, DATABASE_URL:", url ? url.substring(0, 40) + "..." : "MISSING");
+    const pool = new Pool({ connectionString: url });
+    const adapter = new PrismaNeon(pool as any);
+    globalForPrisma.prisma = new PrismaClient({ adapter });
+  }
+  return globalForPrisma.prisma;
 }
 
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
+// Export a getter so the client is always fresh
+export { getPrismaClient };

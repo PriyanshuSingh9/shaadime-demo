@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db";
+import { getPrismaClient } from "@/lib/db";
 
 export async function POST(request: Request) {
   try {
+    console.log("[save-inquiry] DATABASE_URL set:", !!process.env.DATABASE_URL);
+    const prisma = getPrismaClient();
     const body = await request.json();
 
     const inquiry = await prisma.weddingInquiry.create({

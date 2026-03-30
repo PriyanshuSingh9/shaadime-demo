@@ -21,7 +21,7 @@ type CeremonyEvent = {
 type PlanningModalProps = {
   open: boolean;
   onClose: () => void;
-  onSubmit?: (form: FormState) => void;
+  onSubmit?: (form: FormState) => void | Promise<void>;
 };
 
 type FormState = {
@@ -320,9 +320,9 @@ export function PlanningModal({ open, onClose, onSubmit }: PlanningModalProps) {
     bodyRef.current?.scrollTo({ top: 0 });
   };
 
-  const nextStep = () => {
+  const nextStep = async () => {
     if (step < TOTAL_STEPS - 1) goToStep(step + 1);
-    else { onSubmit?.(form); handleClose(); }
+    else { await onSubmit?.(form); handleClose(); }
   };
 
   const prevStep = () => { if (step > 0) goToStep(step - 1); };
@@ -658,6 +658,7 @@ export function PlanningModal({ open, onClose, onSubmit }: PlanningModalProps) {
                             <label>Wedding date</label>
                             <input
                               type="date"
+                              min={new Date().toISOString().split("T")[0]}
                               value={form.weddingDate}
                               onChange={(e) => updateField("weddingDate", e.target.value)}
                             />
@@ -701,20 +702,20 @@ export function PlanningModal({ open, onClose, onSubmit }: PlanningModalProps) {
                             <div className="pf-range-wrap">
                               <input
                                 type="range"
-                                min={3}
+                                min={1}
                                 max={200}
                                 step={1}
                                 value={form.budget}
                                 style={
                                   {
-                                    "--track-fill": `${((form.budget - 3) / (200 - 3)) * 100}%`,
+                                    "--track-fill": `${((form.budget - 1) / (200 - 1)) * 100}%`,
                                   } as React.CSSProperties
                                 }
                                 onChange={(e) => updateField("budget", parseInt(e.target.value))}
                               />
                             </div>
                             <div className="pf-range-labels">
-                              <span>₹3L</span>
+                              <span>₹1L</span>
                               <span>₹2 Crore+</span>
                             </div>
                           </div>

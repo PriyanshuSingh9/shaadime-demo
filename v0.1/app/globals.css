@@ -2838,3 +2838,116 @@ img {
   margin: 0;
   font-style: italic;
 }
+
+/* ── Confirmation Dialog ───────────────────────────────────── */
+
+.confirmation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(18, 8, 17, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.confirmation-dialog {
+  position: relative;
+  width: min(440px, 100%);
+  background: var(--white);
+  border-radius: 24px;
+  padding: 48px 36px 36px;
+  text-align: center;
+  box-shadow:
+    0 24px 80px rgba(75, 18, 72, 0.25),
+    0 0 0 1px rgba(75, 18, 72, 0.05);
+  overflow: hidden;
+}
+
+.confirmation-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--purple) 0%, #d84a82 50%, var(--gold) 100%);
+}
+
+.confirmation-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(75, 18, 72, 0.08), rgba(216, 74, 130, 0.12));
+  color: #b01f68;
+}
+
+.confirmation-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.confirmation-title {
+  margin: 0 0 16px;
+  color: var(--purple);
+  font-family: var(--font-cormorant), sans-serif;
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.confirmation-message {
+  margin: 0 0 24px;
+  color: var(--text-muted);
+  font-family: var(--font-lora), sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.confirmation-divider {
+  width: 48px;
+  height: 1px;
+  margin: 0 auto 16px;
+  background: rgba(75, 18, 72, 0.12);
+}
+
+.confirmation-note {
+  margin: 0 0 28px;
+  color: var(--blush);
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.confirmation-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 36px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #b01f68 0%, #d84a82 100%);
+  color: #fff;
+  font-family: var(--font-lora), sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 8px 28px rgba(176, 31, 104, 0.3);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.confirmation-btn:hover,
+.confirmation-btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 36px rgba(176, 31, 104, 0.45);
+  outline: none;
+}
