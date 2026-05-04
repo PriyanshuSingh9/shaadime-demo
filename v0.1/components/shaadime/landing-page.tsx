@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import type { ComponentProps } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import {
@@ -19,7 +20,7 @@ import { SiteFooter } from "./site-footer";
 import { Heart } from "lucide-react";
 
 type LandingPageProps = {
-  onFormSubmit?: (form: any) => void;
+  onFormSubmit?: ComponentProps<typeof PlanningModal>["onSubmit"];
 };
 
 export function LandingPage({ onFormSubmit }: LandingPageProps) {
@@ -101,80 +102,63 @@ export function LandingPage({ onFormSubmit }: LandingPageProps) {
               </video>
             ))}
             <div className="hero-media-overlay" />
+            <div className="hero-vignette" />
           </div>
 
           <div className="hero-content">
             <div className="hero-shell">
               <div className="hero-copy">
-                <p className="hero-eyebrow">✦ Wedding planning, handled with care</p>
-                <h1 className="hero-h1">
-                  <span className="hero-h1-line">Craft a wedding</span>
+                <p className="hero-eyebrow hero-stagger hero-stagger-1">✦ Wedding planning, handled with care</p>
+                <h1 className="hero-h1 hero-stagger hero-stagger-2">
+                  <span className="hero-h1-line">Craft a wedding worth</span>
                   <span className="hero-h1-line">
-                    worth
                     <span className="accent">arriving for</span>
                   </span>
                 </h1>
-                <p className="hero-highlight">Plan your wedding in minutes</p>
-                <p className="hero-tagline hero-tagline-on-video">
+                <p className="hero-highlight hero-stagger hero-stagger-3">Plan your wedding in minutes</p>
+                <p className="hero-tagline hero-tagline-on-video hero-stagger hero-stagger-4">
                   Tell us how you want the day to feel. We handle the planning,
                   coordination, and follow-through so you can stay present for the
                   moments that matter.
                 </p>
-              </div>
 
-              <div className="hero-divider" />
+                <div className="hero-divider hero-stagger hero-stagger-5" />
 
-              <div className="hero-cta-simple">
-                <button
-                  className="btn-primary hero-primary-cta"
-                  type="button"
-                  onClick={openPlanner}
-                >
-                  Start my wedding planning
-                  <span aria-hidden="true">→</span>
-                </button>
-                <button
-                  className="btn-ghost"
-                  type="button"
-                  onClick={scrollToThemes}
-                >
-                  Explore themes
-                </button>
-              </div>
-
-              <div className="hero-trust">
-                <span>Bengaluru</span>
-                <span className="sep">·</span>
-                <span>Chennai</span>
-                <span className="sep">·</span>
-                <span>Hyderabad</span>
-              </div>
-
-              <div className="hero-controls" aria-label="Hero carousel controls">
-                {heroSlides.map((slide, index) => (
+                <div className="hero-cta-simple hero-stagger hero-stagger-5">
                   <button
-                    key={slide.id}
-                    aria-label={`Show ${slide.label} slide`}
-                    aria-pressed={index === activeHeroIndex}
-                    className={`hero-dot${index === activeHeroIndex ? " is-active" : ""}`}
+                    className="btn-primary hero-primary-cta"
                     type="button"
-                    onClick={() => setActiveHeroIndex(index)}
-                  />
-                ))}
+                    onClick={openPlanner}
+                  >
+                    Start my wedding planning
+                    <span aria-hidden="true">→</span>
+                  </button>
+                  <button
+                    className="btn-ghost"
+                    type="button"
+                    onClick={scrollToThemes}
+                  >
+                    Explore themes
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
-          <button
-            className="hero-scroll-hint"
-            type="button"
-            onClick={() => document.querySelector("#cities")?.scrollIntoView({ behavior: "smooth" })}
-            aria-label="Scroll down"
-          >
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-          </button>
+          <div className="hero-ticker" aria-hidden="true">
+            <div className="ticker-track">
+              {[0, 1].map((group) => (
+                <span className="ticker-content" key={group}>
+                  {heroSlides.map((slide) => (
+                    <span key={`${group}-${slide.id}`}>
+                      <span className="ticker-dot">✦</span> {slide.meta}
+                    </span>
+                  ))}
+                  <span><span className="ticker-dot">✦</span> Coming Soon: Mumbai &amp; Delhi</span>
+                </span>
+              ))}
+            </div>
+          </div>
         </section>
 
         {/* ── 2nd: Cities / Locations ─────────────────────── */}

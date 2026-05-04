@@ -23,33 +23,37 @@ export function SiteHeader({
   return (
     <>
       <nav className={`site-nav${scrolled ? " is-scrolled" : ""}`}>
-        <a className="nav-logo-wrap" href="#hero" onClick={onCloseMobileNav}>
-          <BrandLogo className="nav-logo" priority />
-        </a>
+        <div className="nav-shell">
+          <div className="nav-inner">
+            <a className="nav-logo-wrap" href="#hero" onClick={onCloseMobileNav}>
+              <BrandLogo className="nav-logo" priority />
+            </a>
 
-        <ul className="nav-links" aria-label="Primary">
-          {navItems.map((item) => (
-            <li key={item.href}>
-              <a href={item.href}>{item.label}</a>
-            </li>
-          ))}
-        </ul>
+            <ul className="nav-links" aria-label="Primary">
+              {navItems.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href}>{item.label}</a>
+                </li>
+              ))}
+            </ul>
 
-        <div className="nav-right">
-          <button className="nav-cta" type="button" onClick={onOpenPlanner}>
-            Start Planning →
-          </button>
-          <button
-            aria-expanded={mobileNavOpen}
-            aria-label="Toggle menu"
-            className={`hamburger${mobileNavOpen ? " is-open" : ""}`}
-            type="button"
-            onClick={onToggleMobileNav}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
+            <div className="nav-right">
+              <button className="nav-cta btn-primary cta-primary" type="button" onClick={onOpenPlanner}>
+                Start Planning →
+              </button>
+              <button
+                aria-expanded={mobileNavOpen}
+                aria-label="Toggle menu"
+                className={`hamburger${mobileNavOpen ? " is-open" : ""}`}
+                type="button"
+                onClick={onToggleMobileNav}
+              >
+                <span />
+                <span />
+                <span />
+              </button>
+            </div>
+          </div>
         </div>
       </nav>
 
@@ -67,6 +71,13 @@ export function SiteHeader({
                 {item.label}
               </a>
             ))}
+            <button
+              className="btn-primary cta-primary landing-btn-mobile"
+              type="button"
+              onClick={onOpenPlanner}
+            >
+              Start Planning
+            </button>
           </motion.div>
         ) : null}
       </AnimatePresence>
